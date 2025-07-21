@@ -1,0 +1,60 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+  image: string;
+  demo: string;
+  code: string;
+}
+const { title, description, image, demo, code } = Astro.props;
+---
+
+<div class="project-card">
+  <img src={image} alt={title} />
+  <div class="info">
+    <h3>{title}</h3>
+    <p>{description}</p>
+    <div class="btns">
+      <a href={demo} class="btn small primary" target="_blank" rel="noopener">Demo</a>
+      <a href={code} class="btn small secondary" target="_blank" rel="noopener">Código</a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .project-card {
+    background: rgba(30, 58, 95, 0.2);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease;
+  }
+  .project-card:hover {
+    transform: translateY(-4px);
+  }
+  .project-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+  }
+  .project-card .info {
+    padding: 1rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .project-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+  .project-card p {
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+  }
+  .btn.small {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+</style>

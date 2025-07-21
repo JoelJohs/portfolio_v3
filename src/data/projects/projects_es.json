@@ -1,0 +1,9 @@
+[
+  {
+    "title": "Portafolio Personal",
+    "description": "Descripción del primer proyecto",
+    "image": "/projects/portfolio.png",
+    "demo": "https://ejemplo.com/demo1",
+    "code": "https://github.com/usuario/proyecto1"
+  }
+]

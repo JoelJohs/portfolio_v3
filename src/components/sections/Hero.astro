@@ -1,0 +1,55 @@
+<section id="hero">
+  <div class="hero-content">
+    <h1>¡Hola! Soy <span style="color:var(--cristal)">Joel</span></h1>
+    <p>Desarrollador Backend · NestJS | Express | Django</p>
+
+    <div class="hero-btns">
+      <button class="btn primary" data-scroll="#projects">Ver Proyectos</button>
+      <a
+        href="data:text/plain;charset=utf-8,CV%20Joel%20Hernández"
+        class="btn secondary"
+        download="CV_Joel_Hernández.txt">Descargar CV</a
+      >
+    </div>
+  </div>
+</section>
+
+<style>
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .hero-content h1 {
+    font-size: clamp(2rem, 6vw, 3rem);
+  }
+  .hero-content p {
+    margin: 0.5rem 0 2rem;
+    color: var(--cristal);
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius);
+    transition: transform var(--transition);
+  }
+  .btn.primary {
+    background: var(--cristal);
+    color: var(--abismo);
+  }
+  .btn.secondary {
+    border: 1px solid var(--cristal);
+    color: var(--cristal);
+  }
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+</style>

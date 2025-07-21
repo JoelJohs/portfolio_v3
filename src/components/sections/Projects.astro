@@ -1,0 +1,41 @@
+---
+import ProjectCard from "../ui/ProjectCard.astro";
+import projects_es from "../../data/projects/projects_es.json";
+
+interface Project {
+  title: string;
+  description: string;
+  image: string;
+  demo: string;
+  code: string;
+}
+
+const projects: Project[] = projects_es as Project[];
+---
+
+<section id="projects">
+  <div class="container">
+    <h2>Proyectos</h2>
+    <div class="projects-grid">
+      {
+        projects.map((p: Project) => (
+          <ProjectCard
+            title={p.title}
+            description={p.description}
+            image={p.image}
+            demo={p.demo}
+            code={p.code}
+          />
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .projects-grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+</style>

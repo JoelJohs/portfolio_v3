@@ -1,0 +1,89 @@
+<header id="navbar">
+  <div class="container nav">
+    <span class="logo">Joel Johs</span>
+    <nav>
+      <ul>
+        <li><a href="#hero">Inicio</a></li>
+        <li><a href="#about">Sobre mí</a></li>
+        <li><a href="#projects">Proyectos</a></li>
+        <li><a href="#skills">Stack</a></li>
+        <li><a href="#contact">Contacto</a></li>
+      </ul>
+      <button class="hamburger" aria-label="Menú">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<style>
+  header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 0.75rem 0;
+    transition: background var(--transition);
+  }
+  header.scrolled {
+    background: rgba(10, 25, 47, 0.8);
+  }
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--cristal);
+  }
+  nav ul {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+  }
+  nav a {
+    position: relative;
+    color: var(--luz);
+    text-decoration: none;
+  }
+  nav a::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--oro);
+    transition: width var(--transition);
+  }
+  nav a:hover::after {
+    width: 100%;
+  }
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    background: none;
+    border: none;
+  }
+
+  @media (max-width: 640px) {
+    nav ul {
+      display: none;
+      flex-direction: column;
+      gap: 1rem;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: var(--abismo);
+      padding: 1rem;
+      border-radius: var(--radius);
+    }
+    .hamburger {
+      display: flex;
+    }
+  }
+</style>
