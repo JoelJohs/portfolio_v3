@@ -9,6 +9,7 @@ interface Project {
   demo: string;
   code: string;
   technologies?: string[];
+  type: "personal" | "professional";
 }
 
 const projects: Project[] = projects_es as Project[];
@@ -17,17 +18,34 @@ const projects: Project[] = projects_es as Project[];
 <section id="projects">
   <div class="container">
     <h2>Proyectos</h2>
+
+    <!-- Filtros -->
+    <div class="filter-container">
+      <button class="filter-btn active" data-filter="all">Todos</button>
+      <button class="filter-btn" data-filter="professional"
+        >Profesionales</button
+      >
+      <button class="filter-btn" data-filter="personal">Personales</button>
+    </div>
+
+    <!-- Nota para proyectos personales -->
+    <div class="personal-note" id="personal-note">
+      <p>💡 Proyectos hechos para practicar o por diversión</p>
+    </div>
+
     <div class="projects-grid">
       {
         projects.map((p: Project) => (
-          <ProjectCard
-            title={p.title}
-            description={p.description}
-            image={p.image}
-            demo={p.demo}
-            code={p.code}
-            technologies={p.technologies}
-          />
+          <div class="project-item" data-type={p.type}>
+            <ProjectCard
+              title={p.title}
+              description={p.description}
+              image={p.image}
+              demo={p.demo}
+              code={p.code}
+              technologies={p.technologies}
+            />
+          </div>
         ))
       }
     </div>
@@ -35,9 +53,184 @@ const projects: Project[] = projects_es as Project[];
 </section>
 
 <style>
+  .filter-container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    background: rgba(30, 58, 95, 0.2);
+    border: 1px solid rgba(100, 255, 218, 0.2);
+    color: var(--luz);
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: 500;
+    transition: all var(--transition);
+    backdrop-filter: blur(10px);
+    font-family: var(--font);
+    font-size: 0.9rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .filter-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(100, 255, 218, 0.1),
+      transparent
+    );
+    transition: left 0.5s;
+  }
+
+  .filter-btn:hover::before {
+    left: 100%;
+  }
+
+  .filter-btn:hover {
+    border-color: var(--cristal);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(100, 255, 218, 0.1);
+  }
+
+  .filter-btn.active {
+    background: linear-gradient(135deg, var(--cristal) 0%, var(--oro) 100%);
+    color: var(--abismo);
+    border-color: transparent;
+    font-weight: 600;
+  }
+
+  .filter-btn.active:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(100, 255, 218, 0.4);
+  }
+
+  .personal-note {
+    text-align: center;
+    margin-bottom: 2rem;
+    opacity: 1;
+    transition: all var(--transition);
+  }
+
+  .personal-note.hidden {
+    opacity: 0;
+    height: 0;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .personal-note p {
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    color: var(--oro);
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius);
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 500;
+    backdrop-filter: blur(10px);
+    display: inline-block;
+  }
+
   .projects-grid {
     display: grid;
     gap: 2rem;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .project-item {
+    transition: all 0.3s ease;
+  }
+
+  .project-item.hidden {
+    display: none;
+  }
+
+  @media (max-width: 1024px) {
+    .projects-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .filter-container {
+      gap: 0.5rem;
+    }
+
+    .filter-btn {
+      padding: 0.6rem 1.2rem;
+      font-size: 0.85rem;
+    }
+
+    .personal-note p {
+      padding: 0.8rem 1.2rem;
+      font-size: 0.85rem;
+    }
   }
 </style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const filterBtns = document.querySelectorAll(".filter-btn");
+    const projectItems = document.querySelectorAll(".project-item");
+    const personalNote = document.getElementById("personal-note");
+
+    // Función para mostrar/ocultar proyectos
+    function filterProjects(filterType: string) {
+      projectItems.forEach((item) => {
+        const projectType = item.getAttribute("data-type");
+
+        if (filterType === "all" || projectType === filterType) {
+          item.classList.remove("hidden");
+        } else {
+          item.classList.add("hidden");
+        }
+      });
+
+      // Mostrar/ocultar nota personal - SOLO en filtro "personal"
+      if (personalNote) {
+        if (filterType === "personal") {
+          personalNote.classList.remove("hidden");
+        } else {
+          personalNote.classList.add("hidden");
+        }
+      }
+    }
+
+    // Añadir event listeners a los botones
+    filterBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        // Remover clase active de todos los botones
+        filterBtns.forEach((b) => b.classList.remove("active"));
+
+        // Añadir clase active al botón clickeado
+        btn.classList.add("active");
+
+        // Obtener el tipo de filtro
+        const filterType = btn.getAttribute("data-filter");
+
+        // Filtrar proyectos
+        if (filterType) {
+          filterProjects(filterType);
+        }
+      });
+    });
+
+    // Inicializar con filtro "all" activo
+    filterProjects("all");
+  });
+</script>

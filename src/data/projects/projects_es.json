@@ -5,6 +5,7 @@
     "image": "/projects/portfolio.png",
     "demo": "https://joeljohs-portfolio-v3.vercel.app/",
     "code": "https://github.com/JoelJohs/portfolio_v3",
-    "technologies": ["Astro", "TypeScript"]
+    "technologies": ["Astro", "TypeScript"],
+    "type": "personal"
   }
 ]

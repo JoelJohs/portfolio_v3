@@ -1,6 +1,6 @@
 # 🚀 Portfolio v3 - Joel Josafat Hernández Saucedo
 
-Un portafolio personal construido con **Astro**, que presenta mis habilidades como desarrollador backend agregando efectos visuales  y un sistema de logros interactivo.
+Un portafolio personal construido con **Astro**, que presenta mis habilidades como desarrollador backend agregando efectos visuales y un sistema de logros interactivo.
 
 ## ✨ Características
 
@@ -10,6 +10,7 @@ Un portafolio personal construido con **Astro**, que presenta mis habilidades co
 - 🎵 **Reproductor de Música** - Música ambiental basada en videojuego RPG retro
 - 📱 **Diseño Responsivo** - Optimizado para todos los dispositivos
 - 🌙 **Modo Oscuro** - Interfaz adaptable mediante el uso del kodigo Konami
+- 🔧 **Filtros de Proyectos** - Sistema de categorización entre proyectos personales y profesionales
 - ⚡ **Rendimiento Optimizado** - Carga rápida gracias a Astro
 
 ## 🛠️ Tecnologías Utilizadas
@@ -44,6 +45,7 @@ portfolio_v3/
 │   ├── data/              # Datos del sitio
 │   │   ├── skills.json
 │   │   └── projects/
+│   │       └── projects_es.json  # Proyectos con categorización
 │   ├── layouts/
 │   │   └── Layout.astro
 │   └── pages/
@@ -93,6 +95,32 @@ portfolio_v3/
 | `npm run preview` | Previsualiza la build localmente                  |
 | `npm run astro`   | Ejecuta comandos de Astro CLI                     |
 
+## 🔧 Sistema de Filtros de Proyectos
+
+El portafolio incluye un sistema de filtrado para organizar los proyectos:
+
+### 📂 Categorías
+
+- **Todos** - Muestra todos los proyectos sin filtro
+- **Profesionales** - Proyectos desarrollados para clientes o empresas
+- **Personales** - Proyectos hechos para practicar o por diversión
+
+### 🏗️ Estructura de Datos
+
+Cada proyecto incluye la propiedad `type` para la categorización:
+
+```json
+{
+  "title": "Nombre del Proyecto",
+  "description": "Descripción del proyecto",
+  "image": "/projects/imagen.png",
+  "demo": "https://demo-url.com",
+  "code": "https://github.com/usuario/repo",
+  "technologies": ["Tech1", "Tech2"],
+  "type": "personal" | "professional"
+}
+```
+
 ## 🏆 Sistema de Logros
 
 El portafolio incluye un sistema de logros ocultos que los visitantes pueden desbloquear:
@@ -115,6 +143,15 @@ El portafolio incluye un sistema de logros ocultos que los visitantes pueden des
 ---
 
 ## 📝 Updates
+
+### 2025-01-24
+
+- 🔧 **Sistema de Filtros de Proyectos**
+  - Implementado sistema de categorización de proyectos (Personales/Profesionales)
+  - Añadidos filtros con botones
+  - Grid de 3 columnas que se adapta automáticamente
+  - Transiciones suaves
+  - Estructura de datos con propiedad `type`
 
 ### 2025-01-23
 
