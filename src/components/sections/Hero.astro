@@ -1,6 +1,6 @@
 <section id="hero">
   <div class="hero-content">
-    <h1>¡Hola! Soy <span style="color:var(--cristal)">Joel</span></h1>
+    <h1>¡Hola! Soy <span id="heroName" style="color:var(--cristal)"></span></h1>
     <p>Desarrollador Backend · NestJS | Express | Django</p>
 
     <div class="hero-btns">
@@ -53,3 +53,50 @@
     transform: translateY(-2px);
   }
 </style>
+
+<script>
+  // Typing effect para el nombre en el hero (en bucle)
+  let isTyping = false;
+  let typingTimer: number;
+
+  function typewriterEffect(
+    element: HTMLElement,
+    text: string,
+    speed: number = 120
+  ) {
+    if (isTyping) return;
+    isTyping = true;
+
+    let i = 0;
+    element.textContent = "";
+
+    const timer = setInterval(() => {
+      if (i < text.length) {
+        element.textContent += text.charAt(i);
+        i++;
+      } else {
+        clearInterval(timer);
+        isTyping = false;
+        // Esperar 1 minuto antes de repetir el efecto
+        typingTimer = window.setTimeout(() => {
+          startTypingLoop();
+        }, 60000); // 60 segundos
+      }
+    }, speed);
+  }
+
+  function startTypingLoop() {
+    const heroName = document.getElementById("heroName");
+    if (heroName) {
+      typewriterEffect(heroName, "Joel", 150);
+    }
+  }
+
+  // Iniciar el efecto cuando carga la página
+  document.addEventListener("DOMContentLoaded", () => {
+    // Esperar un poco antes del primer efecto para que se vea el loading
+    setTimeout(() => {
+      startTypingLoop();
+    }, 800);
+  });
+</script>

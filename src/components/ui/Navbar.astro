@@ -88,6 +88,13 @@
 </style>
 
 <script>
+  // Declaraciones de tipos para funciones globales
+  declare global {
+    interface Window {
+      trackAchieve: (achievementId: string) => void;
+    }
+  }
+
   /* NAVBAR SCROLL EFFECTS */
   window.addEventListener("scroll", () => {
     const navbar = document.getElementById("navbar");
@@ -99,7 +106,7 @@
   /* HAMBURGER MENU */
   document.addEventListener("DOMContentLoaded", () => {
     const hamburger = document.querySelector(".hamburger");
-    const navUl = document.querySelector("nav ul");
+    const navUl = document.querySelector("nav ul") as HTMLElement;
 
     if (hamburger && navUl) {
       hamburger.addEventListener("click", () => {
@@ -114,8 +121,8 @@
     navLinks.forEach((link) => {
       link.addEventListener("click", (e) => {
         e.preventDefault();
-        const targetId = link.getAttribute("href");
-        const targetElement = document.querySelector(targetId);
+        const targetId = (link as HTMLAnchorElement).getAttribute("href");
+        const targetElement = document.querySelector(targetId as string);
         if (targetElement) {
           targetElement.scrollIntoView({ behavior: "smooth" });
         }
@@ -125,7 +132,7 @@
 
   /* TRIPLE CLICK LOGO ACHIEVEMENT */
   document.addEventListener("DOMContentLoaded", () => {
-    const logo = document.querySelector(".logo");
+    const logo = document.querySelector(".logo") as HTMLElement;
     let clicks = 0;
     let clickTimer: number;
 
@@ -135,7 +142,9 @@
         clearTimeout(clickTimer);
 
         if (clicks === 3) {
-          window.trackAchieve("tripleClick");
+          if (window.trackAchieve) {
+            window.trackAchieve("tripleClick");
+          }
           clicks = 0;
         } else {
           clickTimer = window.setTimeout(() => {

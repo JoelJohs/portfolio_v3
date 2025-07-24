@@ -93,11 +93,6 @@
   }
 </style>
 
-<!-- Botón de logros -->
-<button id="logrosBtn" class="logros-btn" title="Ver logros">
-  🏆 <span id="logrosCount">0</span>
-</button>
-
 <!-- Modal de logros -->
 <div id="logrosModal" class="logros-modal">
   <div class="modal-content">
@@ -108,26 +103,6 @@
 </div>
 
 <style>
-  .logros-btn {
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
-    background: var(--oro);
-    color: var(--abismo);
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: var(--radius);
-    cursor: pointer;
-    font-weight: 600;
-    z-index: 1000;
-    transition: all 0.3s ease;
-  }
-
-  .logros-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
-  }
-
   .logros-modal {
     position: fixed;
     top: 0;
@@ -189,37 +164,54 @@
 </style>
 
 <script>
+  // Declaraciones de tipos para funciones globales
+  declare global {
+    interface Window {
+      trackAchieve: (achievementId: string) => void;
+      openModal: () => void;
+      closeModal: () => void;
+    }
+  }
+
   const logrosData = [
     {
       id: "copiarEmail",
-      name: "Copia exprés",
+      name: "Rastro digital",
       hint: "¿Dónde guardo mi correo?",
     },
     {
       id: "visitoProyectos",
-      name: "Curioso nato",
+      name: "Explorador curioso",
       hint: "Mira todos los tipos de proyectos.",
     },
     {
       id: "modoOscuro",
-      name: "Secreto oscuro",
+      name: "Sombras activadas",
       hint: "Arriba, arriba, abajo, abajo…",
     },
     {
       id: "tripleClick",
-      name: "Click frenético",
+      name: "Toque insistente",
       hint: "El logo no es un botón… o sí.",
     },
-    { id: "reveloLinkedIn", name: "Iniciales mágicas", hint: "J L H" },
+    {
+      id: "explorarCodigo",
+      name: "Explorador de código",
+      hint: "Inspecciona el código fuente de la página.",
+    },
     {
       id: "reprodujoMusica",
-      name: "DJ de lo retro",
+      name: "Ritmo retro",
       hint: "Escucha el ambiente.",
     },
-    { id: "modoClaro", name: "Luz al final", hint: "¿Volver a la normalidad?" },
+    {
+      id: "modoClaro",
+      name: "Aurora digital",
+      hint: "¿Volver a la normalidad?",
+    },
     {
       id: "datoCurioso",
-      name: "Esperador zen",
+      name: "Paciente del código",
       hint: "Quédate quieto un minuto.",
     },
   ];
@@ -231,11 +223,8 @@
   }
 
   function updateAchievements() {
-    const achievements = getAchievements();
-    const countElement = document.getElementById("logrosCount");
-    if (countElement) {
-      countElement.textContent = achievements.size.toString();
-    }
+    // Ya no necesitamos actualizar contador de botón
+    return;
   }
 
   function renderLogros() {
@@ -273,12 +262,7 @@
 
   // Event listeners
   document.addEventListener("DOMContentLoaded", () => {
-    const logrosBtn = document.getElementById("logrosBtn");
     const logrosModal = document.getElementById("logrosModal");
-
-    if (logrosBtn) {
-      logrosBtn.addEventListener("click", openModal);
-    }
 
     if (logrosModal) {
       logrosModal.addEventListener("click", (e) => {
@@ -288,8 +272,10 @@
       });
     }
 
-    // Actualizar contador inicial
-    updateAchievements();
+    // Listen for custom event from Footer
+    window.addEventListener("openAchievementsModal", openModal);
+
+    // Renderizar logros inicial
     renderLogros();
   });
 

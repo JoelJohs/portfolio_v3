@@ -107,17 +107,19 @@ import TrophyModal from "../components/ui/TrophyModal.astro";
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -200;
+    z-index: -1;
     pointer-events: none;
+    overflow: hidden;
   }
   .particle {
     position: absolute;
-    width: 2px;
-    height: 2px;
+    width: 3px;
+    height: 3px;
     background: var(--cristal);
     border-radius: 50%;
-    opacity: 0.35;
+    opacity: 0.6;
     animation: float 25s infinite linear;
+    box-shadow: 0 0 6px var(--cristal);
   }
   @keyframes float {
     0% {
@@ -127,50 +129,62 @@ import TrophyModal from "../components/ui/TrophyModal.astro";
       transform: translateY(-100vh) rotate(360deg);
     }
   }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--oro);
+    color: var(--abismo);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius);
+    z-index: 999;
+    animation: fadeIn 0.3s;
+  }
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translate(-50%, 10px);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  }
+
+  @media (max-width: 640px) {
+    nav ul {
+      display: none;
+      flex-direction: column;
+      gap: 1rem;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: var(--abismo);
+      padding: 1rem;
+      border-radius: var(--radius);
+    }
+    .hamburger {
+      display: flex;
+    }
+  }
 </style>
 
 <script is:inline>
   /* PARTÍCULAS */
   const pContainer = document.getElementById("particles");
-  for (let i = 0; i < 60; i++) {
-    const p = document.createElement("div");
-    p.className = "particle";
-    p.style.left = Math.random() * 100 + "vw";
-    p.style.animationDelay = Math.random() * 25 + "s";
-    pContainer.appendChild(p);
-  }
-
-  /* KONAMI */
-  let k = [];
-  const KONAMI = [
-    "ArrowUp",
-    "ArrowUp",
-    "ArrowDown",
-    "ArrowDown",
-    "ArrowLeft",
-    "ArrowRight",
-    "ArrowLeft",
-    "ArrowRight",
-    "KeyB",
-    "KeyA",
-  ];
-  window.addEventListener("keydown", (e) => {
-    k.push(e.code);
-    if (k.length > 10) k.shift();
-    if (k.join() === KONAMI.join()) {
-      const dark = document.documentElement.dataset.theme === "dark";
-      document.documentElement.dataset.theme = dark ? "" : "dark";
-      const toggleButton = document.getElementById("toggleMusic");
-      if (toggleButton) {
-        toggleButton.textContent = dark ? "▶️" : "⏸️";
-      }
-      k = [];
-      // Trigger custom event para logro - achievement
-      window.dispatchEvent(
-        new CustomEvent("logro", { detail: dark ? "modoClaro" : "modoOscuro" })
-      );
+  if (pContainer) {
+    for (let i = 0; i < 60; i++) {
+      const p = document.createElement("div");
+      p.className = "particle";
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.animationDelay = Math.random() * 25 + "s";
+      p.style.animationDuration = 20 + Math.random() * 10 + "s";
+      pContainer.appendChild(p);
     }
-  });
+  }
 
   const logrosData = [
     {
@@ -193,7 +207,11 @@ import TrophyModal from "../components/ui/TrophyModal.astro";
       name: "Toque insistente",
       hint: "El logo no es un botón… o sí.",
     },
-    { id: "reveloLinkedIn", name: "Identidad revelada", hint: "J L H" },
+    {
+      id: "explorarCodigo",
+      name: "Explorador de código",
+      hint: "Inspecciona el código fuente de la página.",
+    },
     {
       id: "reprodujoMusica",
       name: "Ritmo retro",
@@ -216,13 +234,43 @@ import TrophyModal from "../components/ui/TrophyModal.astro";
     JSON.parse(localStorage.getItem(LS_ACHIEVEMENTS) || "[]")
   );
 
+  /* PROJECTS VISIT ACHIEVEMENT */
+  document.addEventListener("DOMContentLoaded", () => {
+    const projectsSection = document.getElementById("projects");
+    if (projectsSection) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              window.trackAchieve("visitoProyectos");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.5 }
+      );
+
+      observer.observe(projectsSection);
+    }
+  });
+
   /* UTILS GLOBALES */
   window.trackAchieve = (k) => {
-    if (achievements.has(k)) return;
+    console.log("Attempting to track achievement:", k);
+    if (achievements.has(k)) {
+      console.log("Achievement already unlocked:", k);
+      return;
+    }
     achievements.add(k);
     localStorage.setItem(LS_ACHIEVEMENTS, JSON.stringify([...achievements]));
     window.dispatchEvent(new CustomEvent("achievementUnlocked", { detail: k }));
-    showToast(`🏆 ${logrosData.find((l) => l.id === k).name}`);
+    const achievement = logrosData.find((l) => l.id === k);
+    if (achievement) {
+      console.log("Achievement unlocked:", achievement.name);
+      showToast(`🏆 ${achievement.name}`);
+    } else {
+      console.log("Achievement data not found for:", k);
+    }
   };
 
   function showToast(msg) {
@@ -239,8 +287,8 @@ import TrophyModal from "../components/ui/TrophyModal.astro";
   }
 
   /* KONAMI CODE */
-  let k = [];
-  const KONAMI = [
+  let konamiSequence = [];
+  const KONAMI_CODE = [
     "ArrowUp",
     "ArrowUp",
     "ArrowDown",
@@ -253,23 +301,54 @@ import TrophyModal from "../components/ui/TrophyModal.astro";
     "KeyA",
   ];
   window.addEventListener("keydown", (e) => {
-    k.push(e.code);
-    if (k.length > 10) k.shift();
-    if (k.join() === KONAMI.join()) {
+    konamiSequence.push(e.code);
+    if (konamiSequence.length > 10) konamiSequence.shift();
+    console.log("Current sequence:", konamiSequence.join(","));
+    console.log("Target sequence:", KONAMI_CODE.join(","));
+    if (konamiSequence.join() === KONAMI_CODE.join()) {
+      console.log("KONAMI CODE DETECTED!");
       const dark = document.documentElement.dataset.theme === "dark";
       document.documentElement.dataset.theme = dark ? "" : "dark";
       window.trackAchieve(dark ? "modoClaro" : "modoOscuro");
-      k = [];
+      konamiSequence = [];
     }
   });
 
-  /* JLH LINKEDIN SECRET */
-  let jlh = "";
+  /* DEVELOPER TOOLS DETECTION ACHIEVEMENT */
+  let devtools = { open: false, orientation: null };
+  const threshold = 160;
+
+  function detectDevTools() {
+    if (
+      window.outerHeight - window.innerHeight > threshold ||
+      window.outerWidth - window.innerWidth > threshold
+    ) {
+      if (!devtools.open) {
+        devtools.open = true;
+        window.trackAchieve("explorarCodigo");
+      }
+    } else {
+      devtools.open = false;
+    }
+  }
+
+  // Detectar cuando se abren las herramientas de desarrollador
+  window.addEventListener("resize", detectDevTools);
+  document.addEventListener("keydown", (e) => {
+    // F12 o Ctrl+Shift+I o Ctrl+Shift+J
+    if (
+      e.key === "F12" ||
+      (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J"))
+    ) {
+      setTimeout(detectDevTools, 100);
+    }
+  });
+
+  /* LOGROS MODAL SHORTCUT - Ctrl+L */
   window.addEventListener("keydown", (e) => {
-    jlh += e.key.toLowerCase();
-    if (jlh.includes("jlh")) {
-      window.trackAchieve("reveloLinkedIn");
-      jlh = "";
+    if (e.ctrlKey && e.key.toLowerCase() === "l") {
+      e.preventDefault();
+      window.dispatchEvent(new CustomEvent("openAchievementsModal"));
     }
   });
 

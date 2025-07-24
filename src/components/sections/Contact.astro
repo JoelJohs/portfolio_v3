@@ -243,9 +243,21 @@
 </style>
 
 <script>
+  // Declaraciones de tipos para funciones globales
+  declare global {
+    interface Window {
+      trackAchieve: (achievementId: string) => void;
+    }
+  }
+
   document.getElementById("copyBtn")?.addEventListener("click", async () => {
     try {
       await navigator.clipboard.writeText("jojohersa21@gmail.com");
+
+      // Desbloquear logro de copiar email
+      if (window.trackAchieve) {
+        window.trackAchieve("copiarEmail");
+      }
 
       // Crear un elemento de notificación temporal
       const notification = document.createElement("div");

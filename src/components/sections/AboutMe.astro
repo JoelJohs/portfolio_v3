@@ -16,7 +16,7 @@ const { skills } = skillsData;
               Nivel <strong id="level">--</strong> · <span id="daysLeft"
                 >--</span
               >
-              días para subir
+              exp para subir
             </p>
             <div class="xp-bar-outer">
               <div class="xp-bar-inner" id="xpFill"></div>
@@ -279,3 +279,51 @@ const { skills } = skillsData;
     border: 1px solid rgba(100, 255, 218, 0.1);
   }
 </style>
+
+<script>
+  function updateXPBar() {
+    const birth = new Date(1998, 4, 21); // Mayo 21, 1998
+    const now = new Date();
+    const currentYearBirthday = new Date(now.getFullYear(), 4, 21);
+    const nextYearBirthday = new Date(now.getFullYear() + 1, 4, 21);
+
+    let daysFromLastBirthday: number, daysTotalYear: number;
+
+    if (now >= currentYearBirthday) {
+      // Ya pasó el cumpleaños este año
+      daysFromLastBirthday = Math.floor(
+        (now.getTime() - currentYearBirthday.getTime()) / (24 * 3600 * 1000)
+      );
+      daysTotalYear = Math.floor(
+        (nextYearBirthday.getTime() - currentYearBirthday.getTime()) /
+          (24 * 3600 * 1000)
+      );
+    } else {
+      // No ha llegado el cumpleaños este año
+      const lastYearBirthday = new Date(now.getFullYear() - 1, 4, 21);
+      daysFromLastBirthday = Math.floor(
+        (now.getTime() - lastYearBirthday.getTime()) / (24 * 3600 * 1000)
+      );
+      daysTotalYear = Math.floor(
+        (currentYearBirthday.getTime() - lastYearBirthday.getTime()) /
+          (24 * 3600 * 1000)
+      );
+    }
+
+    const percent = (daysFromLastBirthday / daysTotalYear) * 100;
+    const daysLeft = daysTotalYear - daysFromLastBirthday;
+    const level = now.getFullYear() - 1998;
+
+    const levelElement = document.getElementById("level");
+    const daysLeftElement = document.getElementById("daysLeft");
+    const xpFillElement = document.getElementById("xpFill");
+
+    if (levelElement) levelElement.textContent = level.toString();
+    if (daysLeftElement) daysLeftElement.textContent = daysLeft.toString();
+    if (xpFillElement) xpFillElement.style.width = percent + "%";
+  }
+
+  // Update on load and every minute
+  updateXPBar();
+  setInterval(updateXPBar, 60000);
+</script>

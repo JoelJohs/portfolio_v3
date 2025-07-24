@@ -362,6 +362,13 @@
 </style>
 
 <script>
+  // Declaraciones de tipos para funciones globales
+  declare global {
+    interface Window {
+      trackAchieve: (achievementId: string) => void;
+    }
+  }
+
   interface Song {
     src: string;
     title: string;
@@ -420,30 +427,11 @@
     audio.addEventListener("ended", nextSong);
     audio.addEventListener("loadeddata", () => {
       console.log(`Loaded: ${songs[index].title}`);
-      if (autoplay) {
-        startAutoplay();
-      }
+      // NO autoplay - el usuario debe hacer clic manualmente para activar el logro
     });
     audio.addEventListener("error", (e) => {
       console.error(`Error loading ${songs[index].title}:`, e);
     });
-  }
-
-  // Función para iniciar autoplay
-  function startAutoplay() {
-    if (audio && !isPlaying) {
-      audio
-        .play()
-        .then(() => {
-          isPlaying = true;
-          updatePlayButton();
-          console.log("Autoplay started successfully");
-        })
-        .catch((error) => {
-          console.log("Autoplay was prevented by browser:", error);
-          // El autoplay fue bloqueado por el navegador, pero está listo para reproducir
-        });
-    }
   }
 
   // Función para actualizar la barra de progreso
@@ -460,11 +448,19 @@
 
     isPlaying = !isPlaying;
     if (isPlaying) {
-      audio.play().catch((error) => {
-        console.error("Error playing audio:", error);
-        isPlaying = false;
-        updatePlayButton();
-      });
+      audio
+        .play()
+        .then(() => {
+          // Desbloquear logro de reproducir música cuando el usuario hace clic manualmente
+          if (window.trackAchieve) {
+            window.trackAchieve("reprodujoMusica");
+          }
+        })
+        .catch((error) => {
+          console.error("Error playing audio:", error);
+          isPlaying = false;
+          updatePlayButton();
+        });
     } else {
       audio.pause();
     }
@@ -594,9 +590,9 @@
 
   // Inicialización
   document.addEventListener("DOMContentLoaded", () => {
-    loadSong(currentSongIndex, true); // Cargar con autoplay
+    loadSong(currentSongIndex, false); // Cargar sin autoplay
   });
 
-  // Cargar la primera canción al inicio con autoplay
-  loadSong(currentSongIndex, true);
+  // Cargar la primera canción al inicio sin autoplay
+  loadSong(currentSongIndex, false);
 </script>

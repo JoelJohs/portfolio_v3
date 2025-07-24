@@ -200,3 +200,40 @@
     }
   }
 </style>
+
+<script>
+  // Declaraciones de tipos para funciones globales
+  declare global {
+    interface Window {
+      trackAchieve: (achievementId: string) => void;
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const logrosBtn = document.getElementById("logrosBtn");
+    const logrosCount = document.getElementById("logrosCount");
+
+    if (logrosBtn) {
+      logrosBtn.addEventListener("click", () => {
+        // Trigger modal open event
+        window.dispatchEvent(new CustomEvent("openAchievementsModal"));
+      });
+    }
+
+    // Update achievements count
+    function updateAchievementsCount() {
+      if (logrosCount) {
+        const achievements = new Set(
+          JSON.parse(localStorage.getItem("achievements") || "[]")
+        );
+        logrosCount.textContent = achievements.size.toString();
+      }
+    }
+
+    // Listen for achievement updates
+    window.addEventListener("achievementUnlocked", updateAchievementsCount);
+
+    // Initial update
+    updateAchievementsCount();
+  });
+</script>
