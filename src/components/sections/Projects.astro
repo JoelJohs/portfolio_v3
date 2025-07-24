@@ -8,6 +8,7 @@ interface Project {
   image: string;
   demo: string;
   code: string;
+  technologies?: string[];
 }
 
 const projects: Project[] = projects_es as Project[];
@@ -25,6 +26,7 @@ const projects: Project[] = projects_es as Project[];
             image={p.image}
             demo={p.demo}
             code={p.code}
+            technologies={p.technologies}
           />
         ))
       }

@@ -1,9 +1,10 @@
 [
   {
     "title": "Portafolio Personal",
-    "description": "Un portafolio personal construido con Astro, que presenta mis habilidades como desarrollador backend agregando efectos visuales  y un sistema de logros interactivo.",
+    "description": "Un portafolio personal construido con Astro, que presenta mis habilidades como desarrollador backend agregando efectos visuales y un sistema de logros interactivo.",
     "image": "/projects/portfolio.png",
     "demo": "https://ejemplo.com/demo1",
-    "code": "https://github.com/JoelJohs/portfolio_v3"
+    "code": "https://github.com/JoelJohs/portfolio_v3",
+    "technologies": ["Astro", "TypeScript"]
   }
 ]

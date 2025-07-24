@@ -5,18 +5,62 @@ export interface Props {
   image: string;
   demo: string;
   code: string;
+  technologies?: string[];
 }
-const { title, description, image, demo, code } = Astro.props;
+const {
+  title,
+  description,
+  image,
+  demo,
+  code,
+  technologies = [],
+} = Astro.props;
 ---
 
 <div class="project-card">
-  <img src={image} alt={title} />
+  <div class="image-container">
+    <img src={image} alt={title} />
+  </div>
   <div class="info">
     <h3>{title}</h3>
     <p>{description}</p>
+    {
+      technologies.length > 0 && (
+        <div class="technologies">
+          {technologies.map((tech) => (
+            <span class="tech-pill">{tech}</span>
+          ))}
+        </div>
+      )
+    }
     <div class="btns">
-      <a href={demo} class="btn small primary" target="_blank" rel="noopener">Demo</a>
-      <a href={code} class="btn small secondary" target="_blank" rel="noopener">Código</a>
+      <a href={demo} class="btn small primary" target="_blank" rel="noopener">
+        <svg
+          class="icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="10"></circle>
+          <polygon points="10,8 16,12 10,16 10,8"></polygon>
+        </svg>
+        Demo
+      </a>
+      <a href={code} class="btn small secondary" target="_blank" rel="noopener">
+        <svg
+          class="icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+          ></path>
+        </svg>
+        Código
+      </a>
     </div>
   </div>
 </div>
@@ -28,33 +72,152 @@ const { title, description, image, demo, code } = Astro.props;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    transition: transform 0.3s ease;
+    transition: all var(--transition);
+    border: 1px solid rgba(100, 255, 218, 0.1);
+    backdrop-filter: blur(10px);
   }
+
   .project-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border-color: rgba(100, 255, 218, 0.2);
   }
+
+  .image-container {
+    position: relative;
+    overflow: hidden;
+  }
+
   .project-card img {
     width: 100%;
     height: 180px;
     object-fit: cover;
+    transition: transform var(--transition);
   }
+
+  .project-card:hover img {
+    transform: scale(1.05);
+  }
+
   .project-card .info {
-    padding: 1rem;
+    padding: 1.5rem;
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    gap: 1rem;
   }
+
   .project-card h3 {
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+    margin: 0;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--cristal) 0%, var(--oro) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
+
   .project-card p {
-    margin-bottom: 1rem;
+    margin: 0;
     font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--luz);
+    opacity: 0.8;
+    flex: 1;
   }
+
+  .technologies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0.5rem 0;
+  }
+
+  .tech-pill {
+    background: linear-gradient(
+      135deg,
+      rgba(100, 255, 218, 0.1) 0%,
+      rgba(212, 175, 55, 0.1) 100%
+    );
+    border: 1px solid var(--cristal);
+    border-opacity: 0.3;
+    color: var(--luz);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    backdrop-filter: blur(10px);
+    transition: all var(--transition);
+  }
+
+  .tech-pill:hover {
+    background: linear-gradient(
+      135deg,
+      rgba(100, 255, 218, 0.2) 0%,
+      rgba(212, 175, 55, 0.2) 100%
+    );
+    border-color: var(--cristal);
+    transform: translateY(-1px);
+  }
+
+  .btns {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: auto;
+  }
+
   .btn.small {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.8rem;
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+    border-radius: var(--radius);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+    justify-content: center;
+    border: 1px solid transparent;
+  }
+
+  .btn.primary {
+    background: linear-gradient(135deg, var(--cristal) 0%, var(--oro) 100%);
+    color: var(--abismo);
+  }
+
+  .btn.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(100, 255, 218, 0.4);
+  }
+
+  .btn.secondary {
+    background: rgba(100, 255, 218, 0.1);
+    color: var(--luz);
+    border-color: var(--cristal);
+    border-opacity: 0.2;
+  }
+
+  .btn.secondary:hover {
+    background: rgba(100, 255, 218, 0.2);
+    border-color: var(--cristal);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(100, 255, 218, 0.1);
+  }
+
+  .icon {
+    width: 16px;
+    height: 16px;
+    stroke-width: 2;
+  }
+
+  @media (max-width: 768px) {
+    .project-card .info {
+      padding: 1rem;
+    }
+
+    .btns {
+      flex-direction: column;
+    }
   }
 </style>
