@@ -1,0 +1,305 @@
+<div id="logrosModal">
+  <div class="modal-box">
+    <h3>Logros 🏆</h3>
+    <div id="logrosList"></div>
+    <button class="closeModalBtn" onclick="closeModal()">Cerrar</button>
+  </div>
+</div>
+
+<style>
+  /* MODAL LOGROS */
+  #logrosModal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    display: none;
+    place-items: center;
+    z-index: 1000;
+  }
+  #logrosModal.show {
+    display: grid;
+  }
+  .modal-box {
+    background: var(--niebla);
+    border-radius: var(--radius);
+    padding: 2rem;
+    width: 90%;
+    max-width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  .modal-box h3 {
+    margin-bottom: 1rem;
+    color: var(--oro);
+    text-align: center;
+  }
+  .logro-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+  }
+  .logro-item svg {
+    width: 18px;
+    height: 18px;
+    fill: var(--oro);
+    flex-shrink: 0;
+  }
+  .logro-item.lock svg {
+    fill: var(--niebla);
+  }
+  .closeModalBtn {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background: var(--cristal);
+    color: var(--abismo);
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    width: 100%;
+  }
+  .closeModalBtn:hover {
+    filter: brightness(1.1);
+  }
+
+  /* PARTICLES */
+  .particles-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -200;
+    pointer-events: none;
+  }
+  .particle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--cristal);
+    border-radius: 50%;
+    opacity: 0.35;
+    animation: float 25s infinite linear;
+  }
+  @keyframes float {
+    0% {
+      transform: translateY(100vh) rotate(0deg);
+    }
+    100% {
+      transform: translateY(-100vh) rotate(360deg);
+    }
+  }
+</style>
+
+<!-- Botón de logros -->
+<button id="logrosBtn" class="logros-btn" title="Ver logros">
+  🏆 <span id="logrosCount">0</span>
+</button>
+
+<!-- Modal de logros -->
+<div id="logrosModal" class="logros-modal">
+  <div class="modal-content">
+    <h3>🏆 Logros Desbloqueados</h3>
+    <div id="logrosList" class="logros-list"></div>
+    <button onclick="closeModal()" class="close-btn">Cerrar</button>
+  </div>
+</div>
+
+<style>
+  .logros-btn {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    background: var(--oro);
+    color: var(--abismo);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: 600;
+    z-index: 1000;
+    transition: all 0.3s ease;
+  }
+
+  .logros-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+  }
+
+  .logros-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .logros-modal.show {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .modal-content {
+    background: var(--niebla);
+    padding: 2rem;
+    border-radius: var(--radius);
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+
+  .logros-list {
+    display: grid;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .logro-item {
+    padding: 1rem;
+    background: var(--abismo);
+    border-radius: var(--radius);
+    border-left: 4px solid var(--cristal);
+  }
+
+  .logro-item.lock {
+    opacity: 0.6;
+    border-left-color: var(--niebla);
+  }
+
+  .close-btn {
+    background: var(--cristal);
+    color: var(--abismo);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    margin-top: 1rem;
+  }
+</style>
+
+<script>
+  const logrosData = [
+    {
+      id: "copiarEmail",
+      name: "Copia exprés",
+      hint: "¿Dónde guardo mi correo?",
+    },
+    {
+      id: "visitoProyectos",
+      name: "Curioso nato",
+      hint: "Mira todos los tipos de proyectos.",
+    },
+    {
+      id: "modoOscuro",
+      name: "Secreto oscuro",
+      hint: "Arriba, arriba, abajo, abajo…",
+    },
+    {
+      id: "tripleClick",
+      name: "Click frenético",
+      hint: "El logo no es un botón… o sí.",
+    },
+    { id: "reveloLinkedIn", name: "Iniciales mágicas", hint: "J L H" },
+    {
+      id: "reprodujoMusica",
+      name: "DJ de lo retro",
+      hint: "Escucha el ambiente.",
+    },
+    { id: "modoClaro", name: "Luz al final", hint: "¿Volver a la normalidad?" },
+    {
+      id: "datoCurioso",
+      name: "Esperador zen",
+      hint: "Quédate quieto un minuto.",
+    },
+  ];
+
+  const LS_ACHIEVEMENTS = "achievements";
+
+  function getAchievements() {
+    return new Set(JSON.parse(localStorage.getItem(LS_ACHIEVEMENTS) || "[]"));
+  }
+
+  function updateAchievements() {
+    const achievements = getAchievements();
+    const countElement = document.getElementById("logrosCount");
+    if (countElement) {
+      countElement.textContent = achievements.size.toString();
+    }
+  }
+
+  function renderLogros() {
+    const achievements = getAchievements();
+    const list = document.getElementById("logrosList");
+    if (!list) return;
+
+    list.innerHTML = "";
+    logrosData.forEach((logro) => {
+      const done = achievements.has(logro.id);
+      const div = document.createElement("div");
+      div.className = "logro-item" + (done ? "" : " lock");
+      div.innerHTML = `
+        ${done ? "✅" : "🔒"} <strong>${logro.name}</strong><br>
+        <small>${done ? "¡Conseguido!" : "Pista: " + logro.hint}</small>
+      `;
+      list.appendChild(div);
+    });
+  }
+
+  function openModal() {
+    renderLogros();
+    const modal = document.getElementById("logrosModal");
+    if (modal) {
+      modal.classList.add("show");
+    }
+  }
+
+  function closeModal() {
+    const modal = document.getElementById("logrosModal");
+    if (modal) {
+      modal.classList.remove("show");
+    }
+  }
+
+  // Event listeners
+  document.addEventListener("DOMContentLoaded", () => {
+    const logrosBtn = document.getElementById("logrosBtn");
+    const logrosModal = document.getElementById("logrosModal");
+
+    if (logrosBtn) {
+      logrosBtn.addEventListener("click", openModal);
+    }
+
+    if (logrosModal) {
+      logrosModal.addEventListener("click", (e) => {
+        if (e.target === logrosModal) {
+          closeModal();
+        }
+      });
+    }
+
+    // Actualizar contador inicial
+    updateAchievements();
+    renderLogros();
+  });
+
+  // Escuchar eventos de logros
+  window.addEventListener("achievementUnlocked", () => {
+    updateAchievements();
+    renderLogros();
+  });
+
+  // Hacer funciones globales
+  window.openModal = openModal;
+  window.closeModal = closeModal;
+</script>

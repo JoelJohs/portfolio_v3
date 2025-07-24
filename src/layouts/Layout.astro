@@ -4,7 +4,10 @@ export interface Props {
 }
 const { title } = Astro.props;
 
+import Footer from "../components/sections/Footer.astro";
+import MusicPlayer from "../components/ui/MusicPlayer.astro";
 import Navbar from "../components/ui/Navbar.astro";
+import TrophyModal from "../components/ui/TrophyModal.astro";
 ---
 
 <!doctype html>
@@ -30,9 +33,9 @@ import Navbar from "../components/ui/Navbar.astro";
     <Navbar />
 
     <slot />
-    <!-- <Footer />
-    <LogrosModal />
-    <MusicPlayer /> -->
+    <Footer />
+    <TrophyModal />
+    <MusicPlayer />
   </body>
 </html>
 
@@ -127,7 +130,7 @@ import Navbar from "../components/ui/Navbar.astro";
 </style>
 
 <script is:inline>
-  /* PARTICULAS - Particles system */
+  /* PARTÍCULAS */
   const pContainer = document.getElementById("particles");
   for (let i = 0; i < 60; i++) {
     const p = document.createElement("div");
@@ -169,11 +172,115 @@ import Navbar from "../components/ui/Navbar.astro";
     }
   });
 
-  // /* MUSIC AUTOPLAY */
-  // const audio = new Audio(
-  //   "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav"
-  // );
-  // audio.loop = true;
-  // audio.volume = 0.2;
-  // audio.play().catch(() => {});
+  const logrosData = [
+    {
+      id: "copiarEmail",
+      name: "Rastro digital",
+      hint: "¿Dónde guardo mi correo?",
+    },
+    {
+      id: "visitoProyectos",
+      name: "Explorador curioso",
+      hint: "Mira todos los tipos de proyectos.",
+    },
+    {
+      id: "modoOscuro",
+      name: "Sombras activadas",
+      hint: "Arriba, arriba, abajo, abajo…",
+    },
+    {
+      id: "tripleClick",
+      name: "Toque insistente",
+      hint: "El logo no es un botón… o sí.",
+    },
+    { id: "reveloLinkedIn", name: "Identidad revelada", hint: "J L H" },
+    {
+      id: "reprodujoMusica",
+      name: "Ritmo retro",
+      hint: "Escucha el ambiente.",
+    },
+    {
+      id: "modoClaro",
+      name: "Aurora digital",
+      hint: "¿Volver a la normalidad?",
+    },
+    {
+      id: "datoCurioso",
+      name: "Paciente del código",
+      hint: "Quédate quieto un minuto.",
+    },
+  ];
+
+  const LS_ACHIEVEMENTS = "achievements";
+  const achievements = new Set(
+    JSON.parse(localStorage.getItem(LS_ACHIEVEMENTS) || "[]")
+  );
+
+  /* UTILS GLOBALES */
+  window.trackAchieve = (k) => {
+    if (achievements.has(k)) return;
+    achievements.add(k);
+    localStorage.setItem(LS_ACHIEVEMENTS, JSON.stringify([...achievements]));
+    window.dispatchEvent(new CustomEvent("achievementUnlocked", { detail: k }));
+    showToast(`🏆 ${logrosData.find((l) => l.id === k).name}`);
+  };
+
+  function showToast(msg) {
+    const t = document.createElement("div");
+    t.className = "toast";
+    t.textContent = msg;
+    t.style.cssText = `
+      position: fixed; bottom: 5rem; left: 50%; transform: translateX(-50%);
+      background: var(--oro); color: var(--abismo); padding: .5rem 1rem;
+      border-radius: var(--radius); z-index: 999; font-weight: 600;
+    `;
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 3000);
+  }
+
+  /* KONAMI CODE */
+  let k = [];
+  const KONAMI = [
+    "ArrowUp",
+    "ArrowUp",
+    "ArrowDown",
+    "ArrowDown",
+    "ArrowLeft",
+    "ArrowRight",
+    "ArrowLeft",
+    "ArrowRight",
+    "KeyB",
+    "KeyA",
+  ];
+  window.addEventListener("keydown", (e) => {
+    k.push(e.code);
+    if (k.length > 10) k.shift();
+    if (k.join() === KONAMI.join()) {
+      const dark = document.documentElement.dataset.theme === "dark";
+      document.documentElement.dataset.theme = dark ? "" : "dark";
+      window.trackAchieve(dark ? "modoClaro" : "modoOscuro");
+      k = [];
+    }
+  });
+
+  /* JLH LINKEDIN SECRET */
+  let jlh = "";
+  window.addEventListener("keydown", (e) => {
+    jlh += e.key.toLowerCase();
+    if (jlh.includes("jlh")) {
+      window.trackAchieve("reveloLinkedIn");
+      jlh = "";
+    }
+  });
+
+  /* INACTIVITY ACHIEVEMENT */
+  let idle;
+  const resetIdle = () => {
+    clearTimeout(idle);
+    idle = setTimeout(() => window.trackAchieve("datoCurioso"), 60000);
+  };
+  ["mousemove", "keydown", "scroll"].forEach((evt) =>
+    window.addEventListener(evt, resetIdle)
+  );
+  resetIdle();
 </script>

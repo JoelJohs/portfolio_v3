@@ -1,28 +1,202 @@
 <footer>
   <div class="container">
-    <p>
-      Hecho con 💜 y mucho café ·
-      <button id="logrosBtn">Logros: <span id="logrosCount">0</span>/8</button>
-    </p>
+    <div class="footer-content">
+      <!-- Main footer card -->
+      <div class="footer-card">
+        <div class="footer-main">
+          <p class="footer-description">
+            Mezclando lo que me gusta: programar, videojuegos y mis colores
+            favoritos. <span class="heart">❤️</span>
+          </p>
+        </div>
+
+        <!-- Achievements section -->
+        <div class="achievements-section">
+          <div class="achievements-badge">
+            <span class="trophy">🏆</span>
+            <button id="logrosBtn" class="achievements-btn">
+              Logros: <span id="logrosCount">0</span>/8
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Copyright -->
+      <div class="footer-bottom">
+        <span class="copyright">
+          © {new Date().getFullYear()} Joel Josafat Hernández Saucedo
+        </span>
+      </div>
+    </div>
   </div>
 </footer>
 
 <style>
   footer {
-    text-align: center;
-    padding: 2rem 0;
-    font-size: 0.9rem;
+    margin-top: 3rem;
+    padding: 3rem 0 1.5rem;
+    background: linear-gradient(
+      135deg,
+      rgba(30, 58, 95, 0.1) 0%,
+      rgba(10, 25, 47, 0.2) 100%
+    );
+    border-top: 1px solid rgba(100, 255, 218, 0.1);
+    position: relative;
   }
-  #logrosBtn {
+
+  .footer-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .footer-card {
+    background: rgba(30, 58, 95, 0.15);
+    border: 1px solid rgba(100, 255, 218, 0.1);
+    border-radius: var(--radius);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    backdrop-filter: blur(10px);
+    transition:
+      transform var(--transition),
+      box-shadow var(--transition);
+  }
+
+  .footer-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(100, 255, 218, 0.05);
+  }
+
+  .footer-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    text-align: center;
+  }
+
+  .footer-description {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--luz);
+    max-width: 600px;
+  }
+
+  .heart {
+    color: #ff6b6b;
+    animation: heartbeat 2s ease-in-out infinite;
+  }
+
+  @keyframes heartbeat {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+  }
+
+  .achievements-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(100, 255, 218, 0.1);
+  }
+
+  .achievements-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: var(--radius);
+    padding: 0.75rem 1rem;
+    transition: all var(--transition);
+  }
+
+  .achievements-badge:hover {
+    background: rgba(212, 175, 55, 0.15);
+    transform: translateY(-1px);
+  }
+
+  .trophy {
+    font-size: 1.2rem;
+    animation: bounce 2s ease-in-out infinite;
+  }
+
+  @keyframes bounce {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-3px);
+    }
+  }
+
+  .achievements-btn {
     background: none;
     border: none;
     color: var(--oro);
     cursor: pointer;
     font-size: 0.9rem;
-    text-decoration: underline;
+    font-weight: 600;
     transition: color var(--transition);
   }
-  #logrosBtn:hover {
+
+  .achievements-btn:hover {
     color: var(--cristal);
+  }
+
+  .footer-bottom {
+    text-align: center;
+    padding-top: 1rem;
+  }
+
+  .copyright {
+    font-size: 0.85rem;
+    color: rgba(230, 241, 255, 0.7);
+    font-weight: 300;
+  }
+
+  /* Responsive design */
+  @media (max-width: 768px) {
+    footer {
+      padding: 2rem 0 1rem;
+    }
+
+    .footer-card {
+      padding: 1.5rem;
+    }
+
+    .footer-description {
+      font-size: 0.9rem;
+    }
+
+    .achievements-badge {
+      padding: 0.5rem 0.75rem;
+    }
+
+    .trophy {
+      font-size: 1rem;
+    }
+
+    .achievements-btn {
+      font-size: 0.85rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .footer-main {
+      gap: 1rem;
+    }
+
+    .footer-description {
+      font-size: 0.85rem;
+    }
   }
 </style>

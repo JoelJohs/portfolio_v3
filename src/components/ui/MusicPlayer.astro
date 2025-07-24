@@ -1,0 +1,602 @@
+<!-- Botón flotante para móviles -->
+<button id="musicToggle" class="music-toggle" title="Abrir reproductor">
+  <svg viewBox="0 0 24 24">
+    <path
+      d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"
+    ></path>
+  </svg>
+</button>
+
+<!-- Reproductor completo -->
+<div id="player" class="player">
+  <!-- Info -->
+  <div class="player-info">
+    <span id="player-title" class="player-title">Hero Theme</span>
+  </div>
+
+  <!-- Controles -->
+  <div class="player-controls">
+    <button id="prevBtn" class="player-btn" title="Anterior">
+      <svg viewBox="0 0 24 24"
+        ><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"></path></svg
+      >
+    </button>
+
+    <button
+      id="toggleMusic"
+      class="player-btn play-pause-btn"
+      title="Reproducir/Pausar"
+    >
+      <svg id="playIcon" viewBox="0 0 24 24"
+        ><path d="M8 5v14l11-7z"></path></svg
+      >
+      <svg id="pauseIcon" viewBox="0 0 24 24" style="display:none">
+        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>
+      </svg>
+    </button>
+
+    <button id="nextBtn" class="player-btn" title="Siguiente">
+      <svg viewBox="0 0 24 24"
+        ><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"></path></svg
+      >
+    </button>
+  </div>
+
+  <!-- Barra de progreso -->
+  <div class="player-progress">
+    <div class="progress-bar"></div>
+  </div>
+</div>
+
+<!-- Overlay para cerrar el reproductor en móvil -->
+<div id="playerOverlay" class="player-overlay"></div>
+
+<style>
+  /* Botón flotante de música para móviles */
+  .music-toggle {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 56px;
+    height: 56px;
+    background: rgba(15, 23, 42, 0.9);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--cristal);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 101;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .music-toggle svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--luz);
+    transition: fill 0.2s ease;
+  }
+
+  /* Hover solo en desktop */
+  @media (min-width: 769px) {
+    .music-toggle:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+      background: rgba(15, 23, 42, 0.95);
+    }
+
+    .music-toggle:hover svg {
+      fill: var(--oro);
+    }
+
+    /* En desktop, mostrar reproductor en hover del botón */
+    .music-toggle:hover + .player,
+    .player:hover {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(-4px);
+    }
+
+    /* Posicionar el reproductor arriba del botón en desktop */
+    .player {
+      bottom: calc(
+        1.5rem + 56px + 1rem
+      ); /* Posición del botón + altura del botón + espacio */
+    }
+  }
+
+  /* Reproductor completo */
+  .player {
+    --player-width: 280px;
+    --player-radius: 16px;
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: var(--player-width);
+    background: rgba(15, 23, 42, 0.9);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--cristal);
+    border-radius: var(--player-radius);
+    padding: 1rem;
+    z-index: 100;
+    transition:
+      transform 0.3s ease,
+      opacity 0.3s ease,
+      visibility 0.3s ease,
+      box-shadow 0.3s ease;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+    /* Oculto por defecto en desktop */
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .player:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  }
+
+  .player-info {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  .player-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--luz);
+    margin-bottom: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .player-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .player-btn {
+    background: none;
+    border: none;
+    color: var(--luz);
+    cursor: pointer;
+    padding: 0.5rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+  }
+
+  .player-btn:hover {
+    background: rgba(100, 255, 218, 0.1);
+    color: var(--oro);
+  }
+
+  .player-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+  }
+
+  .play-pause-btn svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .player-progress {
+    width: 100%;
+    height: 4px;
+    background: var(--niebla);
+    border-radius: 2px;
+    cursor: pointer;
+    overflow: hidden;
+  }
+
+  .progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--cristal), var(--oro));
+    transition: width 0.1s linear;
+    border-radius: 2px;
+  }
+
+  /* Overlay para cerrar el reproductor en móvil */
+  .player-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+    display: none;
+    backdrop-filter: blur(2px);
+  }
+
+  /* Media Queries para responsive */
+  @media (max-width: 768px) {
+    /* En móviles, posicionar el reproductor arriba del botón */
+    .player {
+      opacity: 0;
+      visibility: hidden;
+      --player-width: 280px;
+      bottom: calc(
+        1rem + 56px + 0.5rem
+      ); /* Posición del botón + altura + espacio */
+      right: 1rem;
+      padding: 1rem;
+      max-width: calc(100vw - 2rem);
+      z-index: 102;
+      transition:
+        transform 0.3s ease,
+        opacity 0.3s ease,
+        visibility 0.3s ease,
+        box-shadow 0.3s ease;
+    }
+
+    /* Cuando el reproductor está abierto en móvil */
+    .player.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(-4px);
+    }
+
+    /* Ya no necesitamos el overlay en móvil */
+    .player-overlay {
+      display: none;
+    }
+
+    .player-title {
+      font-size: 1rem;
+    }
+
+    .player-btn {
+      padding: 0.6rem;
+    }
+
+    .player-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .play-pause-btn svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    /* Ajustar posición del botón en móviles */
+    .music-toggle {
+      bottom: 1rem;
+      right: 1rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .music-toggle {
+      width: 52px;
+      height: 52px;
+      bottom: 0.75rem;
+      right: 0.75rem;
+    }
+
+    .music-toggle svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .player {
+      --player-width: 260px;
+      bottom: calc(
+        0.75rem + 52px + 0.5rem
+      ); /* Ajustar para botón más pequeño */
+      right: 0.75rem;
+      padding: 1rem;
+    }
+
+    .player-controls {
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .player-info {
+      margin-bottom: 0.75rem;
+    }
+
+    .player-title {
+      font-size: 0.9rem;
+    }
+  }
+
+  /* Para pantallas muy pequeñas */
+  @media (max-width: 360px) {
+    .music-toggle {
+      width: 48px;
+      height: 48px;
+      bottom: 0.5rem;
+      right: 0.5rem;
+    }
+
+    .music-toggle svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .player {
+      --player-width: 240px;
+      bottom: calc(0.5rem + 48px + 0.5rem); /* Ajustar para botón más pequeño */
+      right: 0.5rem;
+      padding: 0.875rem;
+    }
+
+    .player-progress {
+      height: 3px;
+    }
+  }
+
+  /* Para tablets en landscape y pantallas medianas */
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .player {
+      --player-width: 300px;
+      bottom: calc(1.25rem + 56px + 1rem);
+      right: 1.25rem;
+    }
+  }
+
+  /* Para pantallas grandes */
+  @media (min-width: 1025px) {
+    .player {
+      --player-width: 320px;
+      bottom: calc(2rem + 56px + 1rem);
+      right: 2rem;
+      padding: 1.25rem;
+    }
+  }
+</style>
+
+<script>
+  interface Song {
+    src: string;
+    title: string;
+  }
+
+  const songs: Song[] = [
+    { src: "/music/hero_theme.mp3", title: "Hero Theme" },
+    { src: "/music/battle_theme.mp3", title: "Battle Theme" },
+    { src: "/music/dungeon_theme.mp3", title: "Dungeon Theme" },
+  ];
+
+  // Seleccionar canción aleatoria al inicio
+  let currentSongIndex = Math.floor(Math.random() * songs.length);
+  let isPlaying = false;
+  let audio: HTMLAudioElement | null = null;
+
+  // Elementos del DOM
+  const playIcon = document.getElementById("playIcon");
+  const pauseIcon = document.getElementById("pauseIcon");
+  const toggleBtn = document.getElementById("toggleMusic");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const progressBar = document.querySelector(".progress-bar") as HTMLElement;
+  const playerTitle = document.getElementById("player-title");
+  const playerProgress = document.querySelector(".player-progress");
+  const musicToggle = document.getElementById("musicToggle");
+  const player = document.getElementById("player");
+  const playerOverlay = document.getElementById("playerOverlay");
+
+  // Función para crear el nombre formateado de la canción
+  function formatSongTitle(filename: string): string {
+    return filename
+      .replace(".mp3", "")
+      .replace(/_/g, " ")
+      .replace(/\b\w/g, (l) => l.toUpperCase());
+  }
+
+  // Función para cargar una canción
+  function loadSong(index: number, autoplay: boolean = false) {
+    if (audio) {
+      audio.pause();
+      audio.removeEventListener("timeupdate", updateProgress);
+      audio.removeEventListener("ended", nextSong);
+    }
+
+    audio = new Audio(songs[index].src);
+    audio.loop = false;
+    audio.volume = 0.5;
+
+    if (playerTitle) {
+      playerTitle.textContent = songs[index].title;
+    }
+
+    // Event listeners para el audio
+    audio.addEventListener("timeupdate", updateProgress);
+    audio.addEventListener("ended", nextSong);
+    audio.addEventListener("loadeddata", () => {
+      console.log(`Loaded: ${songs[index].title}`);
+      if (autoplay) {
+        startAutoplay();
+      }
+    });
+    audio.addEventListener("error", (e) => {
+      console.error(`Error loading ${songs[index].title}:`, e);
+    });
+  }
+
+  // Función para iniciar autoplay
+  function startAutoplay() {
+    if (audio && !isPlaying) {
+      audio
+        .play()
+        .then(() => {
+          isPlaying = true;
+          updatePlayButton();
+          console.log("Autoplay started successfully");
+        })
+        .catch((error) => {
+          console.log("Autoplay was prevented by browser:", error);
+          // El autoplay fue bloqueado por el navegador, pero está listo para reproducir
+        });
+    }
+  }
+
+  // Función para actualizar la barra de progreso
+  function updateProgress() {
+    if (audio && progressBar && audio.duration) {
+      const percent = (audio.currentTime / audio.duration) * 100;
+      progressBar.style.width = `${percent}%`;
+    }
+  }
+
+  // Función para reproducir/pausar
+  function togglePlay() {
+    if (!audio) return;
+
+    isPlaying = !isPlaying;
+    if (isPlaying) {
+      audio.play().catch((error) => {
+        console.error("Error playing audio:", error);
+        isPlaying = false;
+        updatePlayButton();
+      });
+    } else {
+      audio.pause();
+    }
+    updatePlayButton();
+  }
+
+  // Función para actualizar el botón de play/pause
+  function updatePlayButton() {
+    if (playIcon && pauseIcon) {
+      if (isPlaying) {
+        playIcon.style.display = "none";
+        pauseIcon.style.display = "block";
+      } else {
+        playIcon.style.display = "block";
+        pauseIcon.style.display = "none";
+      }
+    }
+  }
+
+  // Función para ir a la siguiente canción
+  function nextSong() {
+    currentSongIndex = (currentSongIndex + 1) % songs.length;
+    loadSong(currentSongIndex, false); // Sin autoplay en navegación manual
+    if (isPlaying) {
+      audio?.play().catch((error) => {
+        console.error("Error playing next song:", error);
+      });
+    }
+  }
+
+  // Función para ir a la canción anterior
+  function prevSong() {
+    currentSongIndex =
+      currentSongIndex === 0 ? songs.length - 1 : currentSongIndex - 1;
+    loadSong(currentSongIndex, false); // Sin autoplay en navegación manual
+    if (isPlaying) {
+      audio?.play().catch((error) => {
+        console.error("Error playing previous song:", error);
+      });
+    }
+  }
+
+  // Función para buscar en la canción al hacer click en la barra de progreso
+  function seekSong(event: MouseEvent) {
+    if (!audio || !audio.duration || !playerProgress) return;
+
+    const rect = playerProgress.getBoundingClientRect();
+    const clickX = event.clientX - rect.left;
+    const width = rect.width;
+    const percentage = clickX / width;
+    const newTime = percentage * audio.duration;
+
+    audio.currentTime = newTime;
+  }
+
+  // Funciones para manejar el reproductor en móviles
+  function togglePlayer() {
+    if (player) {
+      if (player.classList.contains("open")) {
+        closePlayer();
+      } else {
+        openPlayer();
+      }
+    }
+  }
+
+  function openPlayer() {
+    if (player) {
+      player.classList.add("open");
+    }
+  }
+
+  function closePlayer() {
+    if (player) {
+      player.classList.remove("open");
+    }
+  }
+
+  // Función para cerrar el reproductor al hacer click fuera (solo en móvil)
+  function handleClickOutside(event: Event) {
+    if (isMobile() && player && player.classList.contains("open")) {
+      const target = event.target as HTMLElement;
+      if (!player.contains(target) && !musicToggle?.contains(target)) {
+        closePlayer();
+      }
+    }
+  }
+
+  // Función para verificar si estamos en móvil
+  function isMobile() {
+    return window.innerWidth <= 768;
+  }
+
+  // Event listeners
+  if (toggleBtn) {
+    toggleBtn.addEventListener("click", togglePlay);
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener("click", nextSong);
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener("click", prevSong);
+  }
+
+  if (playerProgress) {
+    playerProgress.addEventListener("click", (event) => {
+      seekSong(event as MouseEvent);
+    });
+  }
+
+  // Event listeners para móvil
+  if (musicToggle) {
+    musicToggle.addEventListener("click", togglePlayer);
+  }
+
+  // Event listener para cerrar al hacer click fuera (solo móvil)
+  document.addEventListener("click", handleClickOutside);
+
+  // Cerrar reproductor al redimensionar la ventana si cambiamos a desktop
+  window.addEventListener("resize", () => {
+    if (!isMobile() && player) {
+      closePlayer();
+    }
+  });
+
+  // Inicialización
+  document.addEventListener("DOMContentLoaded", () => {
+    loadSong(currentSongIndex, true); // Cargar con autoplay
+  });
+
+  // Cargar la primera canción al inicio con autoplay
+  loadSong(currentSongIndex, true);
+</script>

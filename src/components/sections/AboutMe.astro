@@ -1,3 +1,8 @@
+---
+import skillsData from "../../data/skills.json";
+const { skills } = skillsData;
+---
+
 <section id="about">
   <div class="container">
     <h2>Sobre mí</h2>
@@ -74,6 +79,17 @@
               </li>
             </ul>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stack section -->
+    <div class="stack-section">
+      <h3>Mi Stack</h3>
+      <div class="skills-marquee">
+        <div class="skills-track">
+          {skills.map((skill) => <span class="skill-pill">{skill}</span>)}
+          {skills.map((skill) => <span class="skill-pill">{skill}</span>)}
         </div>
       </div>
     </div>
@@ -215,5 +231,51 @@
     .about-right {
       order: 2;
     }
+  }
+
+  /* Stack section styles */
+  .stack-section {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(100, 255, 218, 0.1);
+  }
+
+  .stack-section h3 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+    color: var(--cristal);
+  }
+
+  .skills-marquee {
+    overflow: hidden;
+    width: 100%;
+    margin-bottom: 1.5rem;
+  }
+
+  .skills-track {
+    display: flex;
+    width: max-content;
+    animation: scroll 30s linear infinite;
+    gap: 2rem;
+  }
+
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .skill-pill {
+    flex: 0 0 auto;
+    background: rgba(30, 58, 95, 0.2);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius);
+    font-size: 0.9rem;
+    white-space: nowrap;
+    border: 1px solid rgba(100, 255, 218, 0.1);
   }
 </style>
