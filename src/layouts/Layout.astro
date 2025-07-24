@@ -77,6 +77,8 @@ import ParticlesToggle from "../components/ui/ParticlesToggle.astro";
   html,
   body {
     height: 100%;
+    scroll-behavior: smooth;
+    scroll-snap-type: y proximity;
   }
   body {
     font-family: var(--font);
@@ -105,6 +107,43 @@ import ParticlesToggle from "../components/ui/ParticlesToggle.astro";
   }
   section {
     padding: 4rem 0;
+    scroll-snap-align: start;
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* Ajustes específicos para el scroll-snap */
+  #hero {
+    scroll-snap-align: start;
+    min-height: 100vh;
+  }
+
+  #about,
+  #projects,
+  #contact {
+    scroll-snap-align: start;
+    min-height: 90vh;
+  }
+
+  /* Asegurar que el navbar no interfiera con el scroll-snap */
+  header {
+    scroll-snap-align: none;
+  }
+
+  /* Mejorar el scroll en móviles */
+  @media (max-width: 768px) {
+    html,
+    body {
+      scroll-snap-type: none;
+    }
+
+    section {
+      min-height: auto;
+      padding: 3rem 0;
+      scroll-snap-align: none;
+    }
   }
 
   /* Partículas */
