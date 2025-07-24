@@ -1,0 +1,215 @@
+---
+// Componente de partículas 3D con Three.js
+---
+
+<div id="three-canvas-container">
+  <canvas id="three-canvas"></canvas>
+</div>
+
+<style>
+  #three-canvas-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  #three-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+</style>
+
+<script>
+  import * as THREE from "three";
+
+  let scene: THREE.Scene;
+  let camera: THREE.PerspectiveCamera;
+  let renderer: THREE.WebGLRenderer;
+  let particles: THREE.Points<THREE.BufferGeometry, THREE.PointsMaterial>;
+  let animationId: number;
+
+  function initThreeJS() {
+    const container = document.getElementById("three-canvas-container");
+    const canvas = document.getElementById("three-canvas") as HTMLCanvasElement;
+
+    if (!container || !canvas) return;
+
+    // Escena, cámara, renderer
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    );
+
+    renderer = new THREE.WebGLRenderer({
+      canvas: canvas,
+      alpha: true,
+      antialias: true,
+    });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+
+    // Partículas más armoniosas
+    const particleCount = 800; // Reducido para menos invasivo
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(particleCount * 3);
+    const velocities = new Float32Array(particleCount * 3);
+
+    for (let i = 0; i < particleCount; i++) {
+      // Distribución más amplia y natural
+      positions[i * 3] = (Math.random() - 0.5) * 80;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 80;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 80;
+
+      // Movimiento más sutil, principalmente hacia arriba como las 2D
+      velocities[i * 3] = (Math.random() - 0.5) * 0.005;
+      velocities[i * 3 + 1] = Math.random() * 0.008 + 0.002; // Principalmente hacia arriba
+      velocities[i * 3 + 2] = (Math.random() - 0.5) * 0.005;
+    }
+
+    geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute("velocity", new THREE.BufferAttribute(velocities, 3));
+
+    const material = new THREE.PointsMaterial({
+      color: 0x64ffda,
+      size: 0.3, // Más pequeñas
+      transparent: true,
+      opacity: 0.3, // Más sutiles
+      sizeAttenuation: true,
+    });
+
+    particles = new THREE.Points(geometry, material);
+    scene.add(particles);
+
+    // Luz ambiente suave
+    const light = new THREE.AmbientLight(0xffffff, 0.2);
+    scene.add(light);
+
+    camera.position.z = 25; // Más lejos para vista menos invasiva
+
+    // Variables para interacción del mouse
+    let mouseX = 0,
+      mouseY = 0;
+    let targetRotationX = 0,
+      targetRotationY = 0;
+
+    // Mouse interacción
+    window.addEventListener("mousemove", (e) => {
+      mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+      mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+
+      targetRotationX = mouseY * 0.1;
+      targetRotationY = mouseX * 0.1;
+    });
+
+    // Resize
+    function handleResize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+    window.addEventListener("resize", handleResize);
+
+    // Animación más sutil
+    function animate() {
+      animationId = requestAnimationFrame(animate);
+
+      // Rotación muy sutil del conjunto
+      particles.rotation.x += (targetRotationX - particles.rotation.x) * 0.01;
+      particles.rotation.y += (targetRotationY - particles.rotation.y) * 0.01;
+
+      // Rotación automática muy lenta
+      particles.rotation.y += 0.0002;
+
+      // Movimiento individual de partículas (más parecido a las 2D)
+      const positions = particles.geometry.attributes.position
+        .array as Float32Array;
+      const velocities = particles.geometry.attributes.velocity
+        .array as Float32Array;
+
+      for (let i = 0; i < positions.length; i += 3) {
+        positions[i] += velocities[i];
+        positions[i + 1] += velocities[i + 1];
+        positions[i + 2] += velocities[i + 2];
+
+        // Reiniciar partículas cuando salen por arriba (como las 2D)
+        if (positions[i + 1] > 40) {
+          positions[i] = (Math.random() - 0.5) * 80;
+          positions[i + 1] = -40;
+          positions[i + 2] = (Math.random() - 0.5) * 80;
+        }
+
+        // Límites laterales más suaves
+        if (Math.abs(positions[i]) > 40) {
+          positions[i] = (Math.random() - 0.5) * 80;
+        }
+        if (Math.abs(positions[i + 2]) > 40) {
+          positions[i + 2] = (Math.random() - 0.5) * 80;
+        }
+      }
+
+      particles.geometry.attributes.position.needsUpdate = true;
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+
+    // Cleanup function
+    return () => {
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+      window.removeEventListener("resize", handleResize);
+      if (renderer) {
+        renderer.dispose();
+      }
+    };
+  }
+
+  // Inicializar cuando el componente se monta
+  let cleanup: (() => void) | null = null;
+
+  document.addEventListener("DOMContentLoaded", () => {
+    // Inicializar solo si está activo
+    const threeContainer = document.getElementById("three-canvas-container");
+    if (threeContainer && threeContainer.style.display !== "none") {
+      const result = initThreeJS();
+      if (result) {
+        cleanup = result;
+      }
+    }
+  });
+
+  // Escuchar eventos de toggle
+  window.addEventListener("initThreeParticles", () => {
+    if (!cleanup) {
+      const result = initThreeJS();
+      if (result) {
+        cleanup = result;
+      }
+    }
+  });
+
+  window.addEventListener("cleanupThreeParticles", () => {
+    if (cleanup) {
+      cleanup();
+      cleanup = null;
+    }
+  });
+
+  // Limpiar al desmontar
+  window.addEventListener("beforeunload", () => {
+    if (cleanup) {
+      cleanup();
+    }
+  });
+</script>

@@ -1,14 +1,14 @@
 <section id="hero">
   <div class="hero-content">
     <h1>¡Hola! Soy <span id="heroName" style="color:var(--cristal)"></span></h1>
-    <p>Desarrollador Backend · NestJS | Express | Django</p>
+    <p id="heroDescription"></p>
 
     <div class="hero-btns">
-      <button class="btn primary" data-scroll="#projects">Ver Proyectos</button>
+      <button class="btn primary" id="scrollToProjects">Ver Proyectos</button>
       <a
-        href="data:text/plain;charset=utf-8,CV%20Joel%20Hernández"
+        href="/documents/CV_Joel_Josafat_Hernández_Saucedo_Es.pdf"
         class="btn secondary"
-        download="CV_Joel_Hernández.txt">Descargar CV</a
+        download="CV_Joel_Josafat_Hernández_Saucedo_Es.pdf">Descargar CV</a
       >
     </div>
   </div>
@@ -28,6 +28,27 @@
   .hero-content p {
     margin: 0.5rem 0 2rem;
     color: var(--cristal);
+    min-height: 1.5em; /* Para mantener el espacio cuando esté vacío */
+    font-size: clamp(0.9rem, 4vw, 1.1rem);
+    padding: 0 1rem; /* Padding en móvil */
+  }
+
+  /* Cursor parpadeante */
+  .cursor {
+    animation: blink 1s step-end infinite;
+    display: inline-block;
+    font-weight: normal;
+  }
+
+  @keyframes blink {
+    0%,
+    50% {
+      opacity: 1;
+    }
+    50.1%,
+    100% {
+      opacity: 0;
+    }
   }
 
   .hero-btns {
@@ -59,36 +80,85 @@
   let isTyping = false;
   let typingTimer: number;
 
+  // Tecnologías que puedes modificar fácilmente
+  const technologies = [
+    "Desarrollador Backend",
+    "NodeJS",
+    "NestJS",
+    "Express",
+    "Django.",
+  ];
+
   function typewriterEffect(
     element: HTMLElement,
     text: string,
-    speed: number = 120
+    speed: number = 120,
+    showCursor: boolean = true,
+    onComplete?: () => void
   ) {
-    if (isTyping) return;
-    isTyping = true;
-
     let i = 0;
-    element.textContent = "";
+    element.innerHTML = "";
 
     const timer = setInterval(() => {
       if (i < text.length) {
-        element.textContent += text.charAt(i);
+        const currentText = text.substring(0, i + 1);
+        if (showCursor) {
+          element.innerHTML = currentText + '<span class="cursor">|</span>';
+        } else {
+          element.textContent = currentText;
+        }
         i++;
       } else {
         clearInterval(timer);
-        isTyping = false;
-        // Esperar 1 minuto antes de repetir el efecto
-        typingTimer = window.setTimeout(() => {
-          startTypingLoop();
-        }, 60000); // 60 segundos
+
+        if (showCursor) {
+          // Remover el cursor después de terminar
+          element.textContent = text;
+        }
+
+        if (onComplete) {
+          setTimeout(onComplete, 500); // Espera antes del siguiente texto
+        }
       }
     }, speed);
   }
 
+  function typeDescription() {
+    const heroDescription = document.getElementById("heroDescription");
+    if (!heroDescription) return;
+
+    const fullText = technologies.join(" · ");
+
+    typewriterEffect(heroDescription, fullText, 80, true, () => {
+      // Al final, dejar solo el texto sin cursor
+      heroDescription.textContent = fullText;
+
+      // Reiniciar el ciclo después de 1 minuto
+      typingTimer = window.setTimeout(() => {
+        startTypingLoop();
+      }, 60000);
+    });
+  }
+
   function startTypingLoop() {
+    // Limpiar el contenido anterior
     const heroName = document.getElementById("heroName");
+    const heroDescription = document.getElementById("heroDescription");
+
+    if (heroName) heroName.innerHTML = "";
+    if (heroDescription) heroDescription.innerHTML = "";
+
+    isTyping = true;
+
+    // Primero escribir "Joel" con cursor
     if (heroName) {
-      typewriterEffect(heroName, "Joel", 150);
+      typewriterEffect(heroName, "Joel", 80, true, () => {
+        // Después escribir la descripción
+        setTimeout(() => {
+          typeDescription();
+          isTyping = false;
+        }, 100);
+      });
     }
   }
 
@@ -98,5 +168,19 @@
     setTimeout(() => {
       startTypingLoop();
     }, 800);
+
+    // Funcionalidad del botón "Ver Proyectos"
+    const scrollToProjectsBtn = document.getElementById("scrollToProjects");
+    if (scrollToProjectsBtn) {
+      scrollToProjectsBtn.addEventListener("click", () => {
+        const projectsSection = document.getElementById("projects");
+        if (projectsSection) {
+          projectsSection.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }
+      });
+    }
   });
 </script>

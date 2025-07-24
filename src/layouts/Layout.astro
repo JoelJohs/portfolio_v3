@@ -8,6 +8,8 @@ import Footer from "../components/sections/Footer.astro";
 import MusicPlayer from "../components/ui/MusicPlayer.astro";
 import Navbar from "../components/ui/Navbar.astro";
 import TrophyModal from "../components/ui/TrophyModal.astro";
+import Particles3D from "../components/ui/Particles3D.astro";
+import ParticlesToggle from "../components/ui/ParticlesToggle.astro";
 ---
 
 <!doctype html>
@@ -27,8 +29,11 @@ import TrophyModal from "../components/ui/TrophyModal.astro";
     />
   </head>
   <body>
-    <!-- Partículas -->
+    <!-- Partículas CSS (por defecto) -->
     <div class="particles-container" id="particles"></div>
+
+    <!-- Partículas 3D con Three.js -->
+    <Particles3D />
 
     <Navbar />
 
@@ -36,6 +41,7 @@ import TrophyModal from "../components/ui/TrophyModal.astro";
     <Footer />
     <TrophyModal />
     <MusicPlayer />
+    <ParticlesToggle />
   </body>
 </html>
 
@@ -77,6 +83,7 @@ import TrophyModal from "../components/ui/TrophyModal.astro";
     background: var(--abismo);
     color: var(--luz);
     line-height: 1.6;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
     transition:
       background var(--transition),
       color var(--transition);
@@ -88,7 +95,7 @@ import TrophyModal from "../components/ui/TrophyModal.astro";
     margin: auto;
   }
   h2 {
-    font-size: 2.2rem;
+    font-size: clamp(1.5rem, 5vw, 2.2rem);
     margin-bottom: 1.5rem;
     text-align: center;
   }
@@ -226,6 +233,11 @@ import TrophyModal from "../components/ui/TrophyModal.astro";
       id: "datoCurioso",
       name: "Paciente del código",
       hint: "Quédate quieto un minuto.",
+    },
+    {
+      id: "particulas3D",
+      name: "Dimensión extra",
+      hint: "Cambia el tipo de partículas.",
     },
   ];
 

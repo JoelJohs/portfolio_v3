@@ -67,6 +67,15 @@
     gap: 4px;
     background: none;
     border: none;
+    cursor: pointer;
+    padding: 8px;
+  }
+
+  .hamburger span {
+    width: 25px;
+    height: 3px;
+    background: var(--luz);
+    transition: all 0.3s ease;
   }
 
   @media (max-width: 640px) {
@@ -80,7 +89,14 @@
       background: var(--abismo);
       padding: 1rem;
       border-radius: var(--radius);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      min-width: 200px;
     }
+
+    nav ul.active {
+      display: flex;
+    }
+
     .hamburger {
       display: flex;
     }
@@ -110,7 +126,15 @@
 
     if (hamburger && navUl) {
       hamburger.addEventListener("click", () => {
-        navUl.style.display = navUl.style.display === "flex" ? "none" : "flex";
+        navUl.classList.toggle("active");
+      });
+
+      // Cerrar menú al hacer click en un enlace
+      const navLinks = navUl.querySelectorAll("a");
+      navLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          navUl.classList.remove("active");
+        });
       });
     }
   });
