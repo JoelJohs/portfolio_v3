@@ -3,10 +3,11 @@
     <span class="logo">Joel Johs</span>
     <nav>
       <ul>
-        <li><a href="#hero">Inicio</a></li>
-        <li><a href="#about">Sobre mí</a></li>
-        <li><a href="#projects">Proyectos</a></li>
-        <li><a href="#contact">Contacto</a></li>
+        <li><a href="/#hero">Inicio</a></li>
+        <li><a href="/#about">Sobre mí</a></li>
+        <li><a href="/#projects">Proyectos</a></li>
+        <li><a href="/microprojects">Mini Proyectos</a></li>
+        <li><a href="/#contact">Contacto</a></li>
       </ul>
       <button class="hamburger" aria-label="Menú">
         <span></span><span></span><span></span>
@@ -141,14 +142,36 @@
 
   /* SMOOTH SCROLL FOR NAVIGATION */
   document.addEventListener("DOMContentLoaded", () => {
-    const navLinks = document.querySelectorAll('nav a[href^="#"]');
+    const navLinks = document.querySelectorAll(
+      'nav a[href^="#"], nav a[href^="/#"]'
+    );
     navLinks.forEach((link) => {
       link.addEventListener("click", (e) => {
-        e.preventDefault();
-        const targetId = (link as HTMLAnchorElement).getAttribute("href");
-        const targetElement = document.querySelector(targetId as string);
-        if (targetElement) {
-          targetElement.scrollIntoView({ behavior: "smooth" });
+        const href = (link as HTMLAnchorElement).getAttribute("href");
+
+        // Si es un enlace a una sección de la página actual
+        if (href?.startsWith("#")) {
+          e.preventDefault();
+          const targetElement = document.querySelector(href);
+          if (targetElement) {
+            targetElement.scrollIntoView({ behavior: "smooth" });
+          }
+        }
+        // Si es un enlace a la página principal con anchor
+        else if (href?.startsWith("/#")) {
+          // Solo prevenir si estamos en la página principal
+          if (
+            window.location.pathname === "/" ||
+            window.location.pathname === "/index.html"
+          ) {
+            e.preventDefault();
+            const targetId = href.substring(1); // Quitar el "/"
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+              targetElement.scrollIntoView({ behavior: "smooth" });
+            }
+          }
+          // Si estamos en otra página, dejamos que el enlace funcione normalmente
         }
       });
     });

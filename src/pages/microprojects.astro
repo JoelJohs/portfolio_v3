@@ -1,0 +1,134 @@
+---
+import MicroProjectsLayout from "../layouts/MicroProjectsLayout.astro";
+import EggTimer from "../components/micro_projects/EggTimer.astro";
+import PokemonSearch from "../components/micro_projects/PokemonSearch.astro";
+import WeatherLocal from "../components/micro_projects/WeatherLocal.astro";
+---
+
+<MicroProjectsLayout title="Mini Proyectos - Joel Johs">
+  <section class="hero-microprojects">
+    <div class="container">
+      <h1>Mini Proyectos</h1>
+      <p class="subtitle">
+        Pequeñas aplicaciones interactivas creadas para experimentar con
+        diferentes tecnologías y conceptos
+      </p>
+    </div>
+  </section>
+
+  <section class="microprojects-grid">
+    <div class="container">
+      <div class="projects-container">
+        <div class="project-item">
+          <h2>🥚 Temporizador de Huevos</h2>
+          <p>Un temporizador visual para cocinar huevos perfectos</p>
+          <EggTimer />
+        </div>
+
+        <div class="project-item">
+          <h2>🔍 Buscador de Pokémon</h2>
+          <p>Busca información de cualquier Pokémon usando la PokéAPI</p>
+          <PokemonSearch />
+        </div>
+
+        <div class="project-item">
+          <h2>🌤️ Clima Local</h2>
+          <p>Consulta el clima actual de tu ubicación</p>
+          <WeatherLocal />
+        </div>
+      </div>
+
+      <div class="back-link">
+        <a href="/" class="btn-back">← Volver al Portfolio</a>
+      </div>
+    </div>
+  </section>
+</MicroProjectsLayout>
+
+<style>
+  .hero-microprojects {
+    padding: 6rem 0 4rem;
+    text-align: center;
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+    color: var(--luz);
+    opacity: 0.8;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .microprojects-grid {
+    padding: 2rem 0 4rem;
+  }
+
+  .projects-container {
+    display: grid;
+    gap: 4rem;
+    margin-bottom: 4rem;
+  }
+
+  .project-item {
+    background: rgba(30, 58, 95, 0.3);
+    padding: 2rem;
+    border-radius: var(--radius);
+    border: 1px solid rgba(100, 255, 218, 0.2);
+    transition: all var(--transition);
+  }
+
+  .project-item:hover {
+    transform: translateY(-2px);
+    border-color: rgba(100, 255, 218, 0.4);
+    box-shadow: 0 8px 25px rgba(100, 255, 218, 0.1);
+  }
+
+  .project-item h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    text-align: left;
+  }
+
+  .project-item p {
+    color: var(--luz);
+    opacity: 0.8;
+    margin-bottom: 1.5rem;
+    text-align: left;
+  }
+
+  .back-link {
+    text-align: center;
+  }
+
+  .btn-back {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    border: 2px solid var(--cristal);
+    color: var(--cristal);
+    text-decoration: none;
+    border-radius: var(--radius);
+    transition: all var(--transition);
+    font-weight: 500;
+  }
+
+  .btn-back:hover {
+    background: var(--cristal);
+    color: var(--abismo);
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 768px) {
+    .hero-microprojects {
+      padding: 4rem 0 2rem;
+    }
+
+    .project-item {
+      padding: 1.5rem;
+    }
+
+    .projects-container {
+      gap: 2rem;
+    }
+  }
+</style>

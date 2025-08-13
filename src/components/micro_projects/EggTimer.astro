@@ -1,0 +1,146 @@
+<div class="egg-timer">
+  <div class="timer-display">
+    <span id="timer-display">00:00</span>
+  </div>
+  <div class="timer-controls">
+    <button id="soft-egg" class="timer-btn">Suave (3min)</button>
+    <button id="medium-egg" class="timer-btn">Medio (6min)</button>
+    <button id="hard-egg" class="timer-btn">Duro (9min)</button>
+  </div>
+  <div class="timer-actions">
+    <button id="start-timer" class="action-btn start">Iniciar</button>
+    <button id="stop-timer" class="action-btn stop">Detener</button>
+  </div>
+</div>
+
+<style>
+  .egg-timer {
+    text-align: center;
+    padding: 1rem;
+  }
+
+  .timer-display {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--cristal);
+    margin: 1rem 0;
+  }
+
+  .timer-controls {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin: 1rem 0;
+    flex-wrap: wrap;
+  }
+
+  .timer-btn {
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: 1px solid var(--oro);
+    color: var(--oro);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all var(--transition);
+  }
+
+  .timer-btn:hover {
+    background: var(--oro);
+    color: var(--abismo);
+  }
+
+  .timer-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+
+  .action-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: 500;
+    transition: all var(--transition);
+  }
+
+  .start {
+    background: var(--cristal);
+    color: var(--abismo);
+  }
+
+  .start:hover {
+    background: transparent;
+    color: var(--cristal);
+    border: 1px solid var(--cristal);
+  }
+
+  .stop {
+    background: #ff6b6b;
+    color: white;
+  }
+
+  .stop:hover {
+    background: transparent;
+    color: #ff6b6b;
+    border: 1px solid #ff6b6b;
+  }
+</style>
+
+<script>
+  let timer: number | null = null;
+  let timeLeft = 0;
+
+  const display = document.getElementById("timer-display");
+  const startBtn = document.getElementById("start-timer");
+  const stopBtn = document.getElementById("stop-timer");
+
+  function updateDisplay() {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    if (display) {
+      display.textContent = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+    }
+  }
+
+  function startTimer() {
+    if (timeLeft <= 0) return;
+
+    timer = window.setInterval(() => {
+      timeLeft--;
+      updateDisplay();
+
+      if (timeLeft <= 0) {
+        stopTimer();
+        alert("¡Tiempo terminado! Tu huevo está listo 🥚");
+      }
+    }, 1000);
+  }
+
+  function stopTimer() {
+    if (timer) {
+      clearInterval(timer);
+      timer = null;
+    }
+  }
+
+  // Event listeners
+  document.getElementById("soft-egg")?.addEventListener("click", () => {
+    timeLeft = 180; // 3 minutes
+    updateDisplay();
+  });
+
+  document.getElementById("medium-egg")?.addEventListener("click", () => {
+    timeLeft = 360; // 6 minutes
+    updateDisplay();
+  });
+
+  document.getElementById("hard-egg")?.addEventListener("click", () => {
+    timeLeft = 540; // 9 minutes
+    updateDisplay();
+  });
+
+  startBtn?.addEventListener("click", startTimer);
+  stopBtn?.addEventListener("click", stopTimer);
+</script>

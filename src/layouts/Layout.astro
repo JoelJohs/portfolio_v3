@@ -246,7 +246,7 @@ import ParticlesToggle from "../components/ui/ParticlesToggle.astro";
     {
       id: "modoOscuro",
       name: "Sombras activadas",
-      hint: "Arriba, arriba, abajo, abajo…",
+      hint: "↑↑↓↓←→←→... ¿que seguía?",
     },
     {
       id: "tripleClick",
@@ -256,7 +256,7 @@ import ParticlesToggle from "../components/ui/ParticlesToggle.astro";
     {
       id: "explorarCodigo",
       name: "Explorador de código",
-      hint: "Inspecciona el código fuente de la página.",
+      hint: "Mira detrás del telón...",
     },
     {
       id: "reprodujoMusica",
@@ -266,7 +266,7 @@ import ParticlesToggle from "../components/ui/ParticlesToggle.astro";
     {
       id: "modoClaro",
       name: "Aurora digital",
-      hint: "¿Volver a la normalidad?",
+      hint: "Repite la secuencia antigua...",
     },
     {
       id: "datoCurioso",
@@ -351,6 +351,85 @@ import ParticlesToggle from "../components/ui/ParticlesToggle.astro";
     "KeyB",
     "KeyA",
   ];
+
+  // Variables para gestos táctiles
+  let touchSequence = [];
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchEndX = 0;
+  let touchEndY = 0;
+  const minSwipeDistance = 50;
+
+  // Detectar dirección de swipe
+  function getSwipeDirection(startX, startY, endX, endY) {
+    const deltaX = endX - startX;
+    const deltaY = endY - startY;
+
+    if (
+      Math.abs(deltaX) < minSwipeDistance &&
+      Math.abs(deltaY) < minSwipeDistance
+    ) {
+      return null;
+    }
+
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+      return deltaX > 0 ? "ArrowRight" : "ArrowLeft";
+    } else {
+      return deltaY > 0 ? "ArrowDown" : "ArrowUp";
+    }
+  }
+
+  // Touch events para mobile
+  let touchCount = 0;
+  let lastTouchTime = 0;
+
+  window.addEventListener("touchstart", (e) => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+
+    // Detectar doble tap para B y A
+    const currentTime = Date.now();
+    if (currentTime - lastTouchTime < 300) {
+      touchCount++;
+      if (touchCount === 2) {
+        touchSequence.push("KeyB");
+        touchCount = 0;
+      } else if (touchCount === 3) {
+        touchSequence.push("KeyA");
+        touchCount = 0;
+      }
+    } else {
+      touchCount = 1;
+    }
+    lastTouchTime = currentTime;
+  });
+
+  window.addEventListener("touchend", (e) => {
+    touchEndX = e.changedTouches[0].clientX;
+    touchEndY = e.changedTouches[0].clientY;
+
+    const direction = getSwipeDirection(
+      touchStartX,
+      touchStartY,
+      touchEndX,
+      touchEndY
+    );
+    if (direction) {
+      touchSequence.push(direction);
+      if (touchSequence.length > 10) touchSequence.shift();
+
+      // Verificar secuencia Konami con gestos
+      if (touchSequence.join() === KONAMI_CODE.join()) {
+        console.log("KONAMI CODE DETECTED via touch!");
+        const dark = document.documentElement.dataset.theme === "dark";
+        document.documentElement.dataset.theme = dark ? "" : "dark";
+        window.trackAchieve(dark ? "modoClaro" : "modoOscuro");
+        touchSequence = [];
+      }
+    }
+  });
+
+  // Código Konami con teclado (original)
   window.addEventListener("keydown", (e) => {
     konamiSequence.push(e.code);
     if (konamiSequence.length > 10) konamiSequence.shift();
@@ -362,6 +441,35 @@ import ParticlesToggle from "../components/ui/ParticlesToggle.astro";
       document.documentElement.dataset.theme = dark ? "" : "dark";
       window.trackAchieve(dark ? "modoClaro" : "modoOscuro");
       konamiSequence = [];
+    }
+  });
+
+  // Alternativa simple: 10 taps rápidos en la esquina superior derecha
+  let rapidTaps = 0;
+  let tapTimer;
+
+  window.addEventListener("touchstart", (e) => {
+    const touch = e.touches[0];
+    const x = touch.clientX;
+    const y = touch.clientY;
+
+    // Esquina superior derecha (últimos 80px de ancho y primeros 80px de alto)
+    if (x > window.innerWidth - 80 && y < 80) {
+      rapidTaps++;
+      clearTimeout(tapTimer);
+
+      if (rapidTaps >= 10) {
+        const dark = document.documentElement.dataset.theme === "dark";
+        document.documentElement.dataset.theme = dark ? "" : "dark";
+        window.trackAchieve(dark ? "modoClaro" : "modoOscuro");
+        rapidTaps = 0;
+      } else {
+        tapTimer = setTimeout(() => {
+          rapidTaps = 0;
+        }, 2000);
+      }
+    } else {
+      rapidTaps = 0;
     }
   });
 
@@ -392,6 +500,85 @@ import ParticlesToggle from "../components/ui/ParticlesToggle.astro";
       (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J"))
     ) {
       setTimeout(detectDevTools, 100);
+    }
+  });
+
+  // Detección alternativa para mobile: cambio de orientación + viewport changes
+  let initialViewport = {
+    width: window.innerWidth,
+    height: window.innerHeight,
+  };
+  let orientationChangeCount = 0;
+
+  window.addEventListener("orientationchange", () => {
+    setTimeout(() => {
+      const newWidth = window.innerWidth;
+      const newHeight = window.innerHeight;
+
+      // Si después del cambio de orientación el viewport es significativamente diferente
+      // y no corresponde a un cambio normal de orientación, podría ser devtools
+      orientationChangeCount++;
+
+      if (orientationChangeCount >= 3) {
+        window.trackAchieve("explorarCodigo");
+      }
+    }, 500);
+  });
+
+  // Detección por console usage (más confiable en mobile)
+  let consoleUsed = false;
+  const originalLog = console.log;
+  const originalError = console.error;
+  const originalWarn = console.warn;
+
+  console.log = function (...args) {
+    if (!consoleUsed) {
+      consoleUsed = true;
+      setTimeout(() => window.trackAchieve("explorarCodigo"), 1000);
+    }
+    return originalLog.apply(console, args);
+  };
+
+  console.error = function (...args) {
+    if (!consoleUsed) {
+      consoleUsed = true;
+      setTimeout(() => window.trackAchieve("explorarCodigo"), 1000);
+    }
+    return originalError.apply(console, args);
+  };
+
+  console.warn = function (...args) {
+    if (!consoleUsed) {
+      consoleUsed = true;
+      setTimeout(() => window.trackAchieve("explorarCodigo"), 1000);
+    }
+    return originalWarn.apply(console, args);
+  };
+
+  // Alternativa simple para mobile: 5 taps rápidos en la esquina inferior izquierda
+  let debugTaps = 0;
+  let debugTimer;
+
+  window.addEventListener("touchstart", (e) => {
+    const touch = e.touches[0];
+    const x = touch.clientX;
+    const y = touch.clientY;
+
+    // Esquina inferior izquierda (primeros 80px de ancho y últimos 80px de alto)
+    if (x < 80 && y > window.innerHeight - 80) {
+      debugTaps++;
+      clearTimeout(debugTimer);
+
+      if (debugTaps >= 5) {
+        window.trackAchieve("explorarCodigo");
+        debugTaps = 0;
+      } else {
+        debugTimer = setTimeout(() => {
+          debugTaps = 0;
+        }, 2000);
+      }
+    } else {
+      debugTaps = 0;
     }
   });
 
