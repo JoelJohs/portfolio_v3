@@ -8,33 +8,90 @@ import WeatherLocal from "../components/micro_projects/WeatherLocal.astro";
 <MicroProjectsLayout title="Mini Proyectos - Joel Johs">
   <section class="hero-microprojects">
     <div class="container">
-      <h1>Mini Proyectos</h1>
+      <h1>🚀 Mini Proyectos</h1>
       <p class="subtitle">
-        Pequeñas aplicaciones interactivas creadas para experimentar con
-        diferentes tecnologías y conceptos
+        Pequeñas aplicaciones interactivas para experimentar con el código.
       </p>
     </div>
   </section>
 
-  <section class="microprojects-grid">
+  <!-- Sección de Mini Proyectos -->
+  <section class="microprojects-section">
     <div class="container">
-      <div class="projects-container">
-        <div class="project-item">
-          <h2>🥚 Temporizador de Huevos</h2>
-          <p>Un temporizador visual para cocinar huevos perfectos</p>
-          <EggTimer />
-        </div>
-
-        <div class="project-item">
-          <h2>🔍 Buscador de Pokémon</h2>
-          <p>Busca información de cualquier Pokémon usando la PokéAPI</p>
-          <PokemonSearch />
-        </div>
-
-        <div class="project-item">
-          <h2>🌤️ Clima Local</h2>
-          <p>Consulta el clima actual de tu ubicación</p>
+      <div class="microprojects-grid">
+        <div class="project-card">
+          <div class="badge api">API</div>
+          <div class="project-header">
+            <h3>🌤️ Clima Local</h3>
+            <p>Consulta el clima actual de tu ubicación en tiempo real</p>
+          </div>
           <WeatherLocal />
+          <div class="project-actions">
+            <button class="view-code-btn" data-project="weather-local">
+              👁️ Ver Código
+            </button>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="badge api">API</div>
+          <div class="project-header">
+            <h3>🔍 Buscador Pokémon</h3>
+            <p>Descubre cualquier Pokémon con posibilidad de encontrar shiny</p>
+          </div>
+          <PokemonSearch />
+          <div class="project-actions">
+            <button class="view-code-btn" data-project="pokemon-search">
+              👁️ Ver Código
+            </button>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="badge app">APP</div>
+          <div class="project-header">
+            <h3>🥚 Temporizador de Huevos</h3>
+            <p>Cocina huevos perfectos con diferentes tiempos</p>
+          </div>
+          <EggTimer />
+          <div class="project-actions">
+            <button class="view-code-btn" data-project="egg-timer">
+              👁️ Ver Código
+            </button>
+          </div>
+        </div>
+
+        <div class="project-card coming-soon">
+          <div class="badge app">APP</div>
+          <div class="project-header">
+            <h3>🎯 Calculadora</h3>
+            <p>Calculadora con funciones avanzadas</p>
+          </div>
+          <div class="coming-soon-content">
+            <span>Próximamente</span>
+          </div>
+        </div>
+
+        <div class="project-card coming-soon">
+          <div class="badge app">APP</div>
+          <div class="project-header">
+            <h3>📝 Editor de Texto</h3>
+            <p>Editor de markdown en tiempo real</p>
+          </div>
+          <div class="coming-soon-content">
+            <span>En desarrollo</span>
+          </div>
+        </div>
+
+        <div class="project-card coming-soon">
+          <div class="badge api">API</div>
+          <div class="project-header">
+            <h3>🎵 Música</h3>
+            <p>Reproductor y búsqueda de música</p>
+          </div>
+          <div class="coming-soon-content">
+            <span>Próximamente</span>
+          </div>
         </div>
       </div>
 
@@ -43,79 +100,315 @@ import WeatherLocal from "../components/micro_projects/WeatherLocal.astro";
       </div>
     </div>
   </section>
+
+  <!-- Modal de código -->
+  <div class="code-modal" id="codeModal">
+    <div class="code-modal-content">
+      <div class="code-modal-header">
+        <h3 id="modalTitle">Código del Proyecto</h3>
+        <button class="close-modal" id="closeModal">✕</button>
+      </div>
+      <div class="code-modal-body">
+        <div class="code-block" id="codeContent">
+          <!-- El código se cargará aquí -->
+        </div>
+      </div>
+    </div>
+  </div>
 </MicroProjectsLayout>
 
 <style>
   .hero-microprojects {
-    padding: 6rem 0 4rem;
+    padding: 6rem 0 3rem;
     text-align: center;
+    background: linear-gradient(
+      135deg,
+      rgba(10, 25, 47, 0.9),
+      rgba(30, 58, 95, 0.6)
+    );
+  }
+
+  .hero-microprojects h1 {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    background: linear-gradient(135deg, var(--cristal), var(--oro));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
   }
 
   .subtitle {
     font-size: 1.2rem;
     color: var(--luz);
-    opacity: 0.8;
-    max-width: 600px;
+    opacity: 0.9;
+    max-width: 700px;
     margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* Sección de Mini Proyectos */
+  .microprojects-section {
+    padding: 4rem 0;
+    background: rgba(5, 12, 23, 0.3);
+  }
+
+  .microprojects-section h2 {
+    text-align: center;
+    margin-bottom: 3rem;
+    font-size: 2rem;
+    color: var(--cristal);
   }
 
   .microprojects-grid {
-    padding: 2rem 0 4rem;
-  }
-
-  .projects-container {
     display: grid;
-    gap: 4rem;
-    margin-bottom: 4rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
   }
 
-  .project-item {
-    background: rgba(30, 58, 95, 0.3);
+  .project-card {
+    background: linear-gradient(
+      135deg,
+      rgba(30, 58, 95, 0.4),
+      rgba(10, 25, 47, 0.7)
+    );
+    border-radius: 16px;
     padding: 2rem;
-    border-radius: var(--radius);
     border: 1px solid rgba(100, 255, 218, 0.2);
-    transition: all var(--transition);
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 350px;
   }
 
-  .project-item:hover {
-    transform: translateY(-2px);
+  .project-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--cristal), var(--oro));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .project-card:hover {
+    transform: translateY(-8px);
     border-color: rgba(100, 255, 218, 0.4);
-    box-shadow: 0 8px 25px rgba(100, 255, 218, 0.1);
+    box-shadow:
+      0 20px 40px rgba(0, 0, 0, 0.3),
+      0 0 30px rgba(100, 255, 218, 0.1);
   }
 
-  .project-item h2 {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-    text-align: left;
+  .project-card:hover::before {
+    opacity: 1;
   }
 
-  .project-item p {
-    color: var(--luz);
-    opacity: 0.8;
+  /* Badges */
+  .badge {
+    position: absolute;
+    top: -0.5rem;
+    right: -0.5rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    z-index: 2;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .badge.api {
+    background: linear-gradient(135deg, #00d4aa, #00c7a3);
+    color: var(--abismo);
+  }
+
+  .badge.app {
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    color: var(--abismo);
+  }
+
+  .project-header {
     margin-bottom: 1.5rem;
-    text-align: left;
-  }
-
-  .back-link {
     text-align: center;
   }
 
-  .btn-back {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    background: transparent;
-    border: 2px solid var(--cristal);
+  .project-header h3 {
+    font-size: 1.3rem;
     color: var(--cristal);
-    text-decoration: none;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  .project-header p {
+    color: var(--luz);
+    opacity: 0.8;
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+
+  /* Coming soon cards */
+  .coming-soon {
+    opacity: 0.7;
+  }
+
+  .coming-soon-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--oro);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.1rem;
+  }
+
+  /* Acciones del proyecto */
+  .project-actions {
+    margin-top: auto;
+    padding-top: 1rem;
+    text-align: center;
+  }
+
+  .view-code-btn {
+    background: rgba(100, 255, 218, 0.1);
+    border: 1px solid rgba(100, 255, 218, 0.3);
+    color: var(--cristal);
+    padding: 0.6rem 1.2rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .view-code-btn:hover {
+    background: rgba(100, 255, 218, 0.2);
+    border-color: rgba(100, 255, 218, 0.5);
+    transform: translateY(-2px);
+  }
+
+  /* Modal de código */
+  .code-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 2rem;
+    backdrop-filter: blur(4px);
+  }
+
+  .code-modal.active {
+    display: flex;
+  }
+
+  .code-modal-content {
+    background: var(--abismo);
+    border: 1px solid rgba(100, 255, 218, 0.3);
+    border-radius: 12px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 80vh;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .code-modal-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(100, 255, 218, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(30, 58, 95, 0.3);
+  }
+
+  .code-modal-header h3 {
+    color: var(--cristal);
+    margin: 0;
+    font-size: 1.2rem;
+  }
+
+  .close-modal {
+    background: none;
+    border: none;
+    color: var(--luz);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
     border-radius: var(--radius);
     transition: all var(--transition);
-    font-weight: 500;
+  }
+
+  .close-modal:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--cristal);
+  }
+
+  .code-modal-body {
+    padding: 1.5rem;
+    overflow-y: auto;
+    max-height: calc(80vh - 120px);
+  }
+
+  .code-block {
+    background: rgba(10, 25, 47, 0.7);
+    border: 1px solid rgba(100, 255, 218, 0.2);
+    border-radius: var(--radius);
+    padding: 1rem;
+    font-family: "Fira Code", "Courier New", monospace;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--luz);
+    white-space: pre-wrap;
+    overflow-x: auto;
+  }
+
+  /* Botón de regreso */
+  .back-link {
+    text-align: center;
+    margin-top: 3rem;
+  }
+
+  .btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, var(--cristal), var(--oro));
+    color: var(--abismo);
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(100, 255, 218, 0.3);
   }
 
   .btn-back:hover {
-    background: var(--cristal);
-    color: var(--abismo);
     transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(100, 255, 218, 0.4);
+    background: linear-gradient(135deg, var(--oro), var(--cristal));
+  }
+
+  /* Responsividad */
+  @media (max-width: 1200px) {
+    .microprojects-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
   }
 
   @media (max-width: 768px) {
@@ -123,12 +416,359 @@ import WeatherLocal from "../components/micro_projects/WeatherLocal.astro";
       padding: 4rem 0 2rem;
     }
 
-    .project-item {
-      padding: 1.5rem;
+    .microprojects-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
     }
 
-    .projects-container {
-      gap: 2rem;
+    .project-card {
+      padding: 1.5rem;
+      min-height: 300px;
+    }
+
+    .badge {
+      top: -0.3rem;
+      right: -0.3rem;
+      padding: 0.3rem 0.7rem;
+      font-size: 0.65rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero-microprojects h1 {
+      font-size: 2rem;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      padding: 0 1rem;
+    }
+
+    .project-card {
+      padding: 1rem;
+      min-height: 280px;
+    }
+
+    .project-header h3 {
+      font-size: 1.1rem;
+    }
+
+    .project-header p {
+      font-size: 0.85rem;
     }
   }
 </style>
+
+<script>
+  // Configuración de códigos de ejemplo
+  const projectCodes = {
+    "weather-local": {
+      title: "🌤️ Clima Local - Código Vanilla JS",
+      code: `// Obtener clima usando Geolocation API
+const getWeatherBtn = document.getElementById('get-weather');
+const weatherResult = document.getElementById('weather-result');
+
+function getWeatherIcon(code) {
+  const iconMap = {
+    '01d': '☀️', '01n': '🌙', '02d': '⛅', '02n': '☁️',
+    '03d': '☁️', '03n': '☁️', '04d': '☁️', '04n': '☁️',
+    '09d': '🌧️', '09n': '🌧️', '10d': '🌦️', '10n': '🌦️',
+    '11d': '⛈️', '11n': '⛈️', '13d': '❄️', '13n': '❄️',
+    '50d': '🌫️', '50n': '🌫️'
+  };
+  return iconMap[code] || '🌤️';
+}
+
+async function getWeather() {
+  if (!navigator.geolocation) {
+    weatherResult.innerHTML = 
+      '<p class="error">Geolocalización no soportada</p>';
+    return;
+  }
+
+  weatherResult.innerHTML = '<p class="loading">Obteniendo ubicación...</p>';
+
+  navigator.geolocation.getCurrentPosition(
+    async (position) => {
+      const { latitude, longitude } = position.coords;
+      
+      try {
+        // En una implementación real, usarías una API key válida
+        const API_KEY = 'tu-api-key-aqui';
+        const response = await fetch(
+          \`https://api.openweathermap.org/data/2.5/weather?lat=\${latitude}&lon=\${longitude}&appid=\${API_KEY}&units=metric&lang=es\`
+        );
+        
+        if (!response.ok) throw new Error('Error al obtener datos');
+        
+        const data = await response.json();
+        
+        weatherResult.innerHTML = \`
+          <div class="weather-card">
+            <div class="weather-icon">\${getWeatherIcon(data.weather[0].icon)}</div>
+            <div class="temperature">\${Math.round(data.main.temp)}°C</div>
+            <div class="weather-description">\${data.weather[0].description}</div>
+            <div class="weather-details">
+              <div class="detail">
+                <div class="detail-label">Humedad</div>
+                <div class="detail-value">\${data.main.humidity}%</div>
+              </div>
+              <div class="detail">
+                <div class="detail-label">Viento</div>
+                <div class="detail-value">\${Math.round(data.wind.speed * 3.6)} km/h</div>
+              </div>
+            </div>
+          </div>
+        \`;
+      } catch (error) {
+        weatherResult.innerHTML = 
+          '<p class="error">Error al obtener datos del clima</p>';
+      }
+    },
+    () => {
+      weatherResult.innerHTML = 
+        '<p class="error">No se pudo obtener la ubicación</p>';
+    }
+  );
+}
+
+getWeatherBtn?.addEventListener('click', getWeather);`,
+    },
+    "pokemon-search": {
+      title: "🔍 Buscador Pokémon - Código Vanilla JS",
+      code: `// Buscador de Pokémon con PokéAPI
+const input = document.getElementById('pokemon-input');
+const searchBtn = document.getElementById('search-btn');
+const result = document.getElementById('pokemon-result');
+
+// Lista de Pokémon populares para autocompletado
+const popularPokemon = [
+  'pikachu', 'charizard', 'blastoise', 'venusaur', 'mewtwo',
+  'mew', 'lugia', 'rayquaza', 'lucario', 'greninja'
+];
+
+function isShiny() {
+  return Math.random() < 0.05; // 5% probabilidad de shiny
+}
+
+async function searchPokemon() {
+  const pokemonName = input.value.toLowerCase().trim();
+  if (!pokemonName) return;
+
+  result.innerHTML = '<div class="loading">Buscando...</div>';
+
+  try {
+    const response = await fetch(
+      \`https://pokeapi.co/api/v2/pokemon/\${pokemonName}\`
+    );
+
+    if (!response.ok) throw new Error('Pokémon no encontrado');
+
+    const pokemon = await response.json();
+    const shiny = isShiny();
+    const imageUrl = shiny 
+      ? (pokemon.sprites.front_shiny || pokemon.sprites.front_default)
+      : pokemon.sprites.front_default;
+
+    if (!imageUrl) throw new Error('No se pudo cargar la imagen');
+
+    result.innerHTML = \`
+      <div class="pokemon-card">
+        \${shiny ? '<div class="shiny-indicator">✨ SHINY</div>' : ''}
+        <div class="pokemon-image">
+          <img src="\${imageUrl}" alt="\${pokemon.name}" 
+               onerror="this.src='\${pokemon.sprites.front_default}'" />
+        </div>
+        <div class="pokemon-info">
+          <h3 class="pokemon-name">\${pokemon.name}</h3>
+          <div class="pokemon-id">#\${pokemon.id.toString().padStart(3, '0')}</div>
+        </div>
+      </div>
+    \`;
+  } catch (error) {
+    result.innerHTML = 
+      '<div class="error">Pokémon no encontrado. Verifica el nombre.</div>';
+  }
+}
+
+// Autocompletado simple
+input?.addEventListener('input', (e) => {
+  const query = e.target.value.toLowerCase();
+  if (query.length < 2) return;
+  
+  const matches = popularPokemon.filter(name => 
+    name.includes(query)
+  ).slice(0, 5);
+  
+  // Aquí mostrarías las sugerencias
+  console.log('Sugerencias:', matches);
+});
+
+input?.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    searchPokemon();
+  }
+});
+
+searchBtn?.addEventListener('click', searchPokemon);`,
+    },
+    "egg-timer": {
+      title: "🥚 Temporizador de Huevos - Código Vanilla JS",
+      code: `// Temporizador de huevos con diferentes tipos
+const timerDisplay = document.getElementById('timer-display');
+const startBtn = document.getElementById('start-timer');
+const stopBtn = document.getElementById('stop-timer');
+const resetBtn = document.getElementById('reset-timer');
+
+// Tipos de huevos y sus tiempos (en segundos)
+const eggTypes = {
+  'soft': 240,      // 4 minutos - huevo blando
+  'medium': 420,    // 7 minutos - huevo medio
+  'hard': 600       // 10 minutos - huevo duro
+};
+
+let currentTimer = null;
+let timeLeft = 0;
+let selectedType = 'medium';
+
+function formatTime(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return \`\${mins.toString().padStart(2, '0')}:\${secs.toString().padStart(2, '0')}\`;
+}
+
+function updateDisplay() {
+  timerDisplay.textContent = formatTime(timeLeft);
+  
+  // Cambiar color según el tiempo restante
+  if (timeLeft <= 30) {
+    timerDisplay.style.color = '#ff6b6b'; // Rojo
+  } else if (timeLeft <= 60) {
+    timerDisplay.style.color = '#ffa726'; // Naranja
+  } else {
+    timerDisplay.style.color = '#64ffda'; // Verde cristal
+  }
+}
+
+function startTimer() {
+  if (currentTimer) return; // Ya hay un timer corriendo
+  
+  if (timeLeft === 0) {
+    timeLeft = eggTypes[selectedType];
+  }
+  
+  currentTimer = setInterval(() => {
+    timeLeft--;
+    updateDisplay();
+    
+    if (timeLeft <= 0) {
+      stopTimer();
+      playNotification();
+      alert('¡Tus huevos están listos! 🥚✨');
+    }
+  }, 1000);
+  
+  startBtn.disabled = true;
+  stopBtn.disabled = false;
+}
+
+function stopTimer() {
+  if (currentTimer) {
+    clearInterval(currentTimer);
+    currentTimer = null;
+  }
+  
+  startBtn.disabled = false;
+  stopBtn.disabled = true;
+}
+
+function resetTimer() {
+  stopTimer();
+  timeLeft = eggTypes[selectedType];
+  updateDisplay();
+}
+
+function playNotification() {
+  // Crear un sonido simple usando Web Audio API
+  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  const oscillator = audioContext.createOscillator();
+  const gainNode = audioContext.createGain();
+  
+  oscillator.connect(gainNode);
+  gainNode.connect(audioContext.destination);
+  
+  oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+  gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+  
+  oscillator.start();
+  oscillator.stop(audioContext.currentTime + 0.3);
+}
+
+// Seleccionar tipo de huevo
+document.querySelectorAll('.egg-type-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    selectedType = btn.dataset.type;
+    resetTimer();
+    
+    // Actualizar UI
+    document.querySelectorAll('.egg-type-btn').forEach(b => 
+      b.classList.remove('active')
+    );
+    btn.classList.add('active');
+  });
+});
+
+startBtn?.addEventListener('click', startTimer);
+stopBtn?.addEventListener('click', stopTimer);
+resetBtn?.addEventListener('click', resetTimer);
+
+// Inicializar
+resetTimer();`,
+    },
+  };
+
+  // Funcionalidad del modal
+  const modal = document.getElementById("codeModal");
+  const modalTitle = document.getElementById("modalTitle");
+  const codeContent = document.getElementById("codeContent");
+  const closeModal = document.getElementById("closeModal");
+
+  // Abrir modal
+  document.querySelectorAll(".view-code-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const projectId = (btn as HTMLElement).dataset.project;
+      const project = projectCodes[projectId as keyof typeof projectCodes];
+
+      if (project && modal && modalTitle && codeContent) {
+        modalTitle.textContent = project.title;
+        codeContent.textContent = project.code;
+        modal.classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
+    });
+  });
+
+  // Cerrar modal
+  function closeModalHandler() {
+    if (modal) {
+      modal.classList.remove("active");
+      document.body.style.overflow = "auto";
+    }
+  }
+
+  closeModal?.addEventListener("click", closeModalHandler);
+
+  modal?.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      closeModalHandler();
+    }
+  });
+
+  // Cerrar con ESC
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal?.classList.contains("active")) {
+      closeModalHandler();
+    }
+  });
+</script>

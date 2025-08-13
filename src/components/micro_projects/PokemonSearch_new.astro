@@ -120,22 +120,12 @@
       rgba(30, 58, 95, 0.3),
       rgba(10, 25, 47, 0.5)
     );
-    min-height: 160px;
+    min-height: 180px;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     overflow: hidden;
-    transition: all 0.3s ease;
-  }
-
-  .pokemon-result:hover {
-    border-color: rgba(100, 255, 218, 0.4);
-    background: linear-gradient(
-      135deg,
-      rgba(30, 58, 95, 0.4),
-      rgba(10, 25, 47, 0.6)
-    );
   }
 
   .placeholder {
@@ -182,8 +172,8 @@
   }
 
   .pokemon-image {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     background: radial-gradient(
       circle,
       rgba(100, 255, 218, 0.2),
@@ -222,8 +212,8 @@
   }
 
   .pokemon-image img {
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
     transition: transform var(--transition);
   }
@@ -243,14 +233,14 @@
     color: var(--cristal);
     font-weight: bold;
     text-transform: capitalize;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     margin: 0;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   }
 
   .pokemon-id {
     color: var(--oro);
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     opacity: 0.8;
   }
 
@@ -303,23 +293,6 @@
   .error {
     color: #ff6b6b;
     font-size: 0.9rem;
-  }
-
-  /* Responsive */
-  @media (max-width: 768px) {
-    .pokemon-card {
-      flex-direction: column;
-      text-align: center;
-      gap: 1rem;
-    }
-
-    .pokemon-info {
-      align-items: center;
-    }
-
-    .pokemon-name {
-      font-size: 1.2rem;
-    }
   }
 </style>
 
@@ -459,20 +432,15 @@
       const pokemon = await response.json();
       const shiny = isShiny();
       const imageUrl = shiny
-        ? pokemon.sprites.front_shiny || pokemon.sprites.front_default
+        ? pokemon.sprites.front_shiny
         : pokemon.sprites.front_default;
-
-      // Verificar que tengamos una imagen válida
-      if (!imageUrl) {
-        throw new Error("No se pudo cargar la imagen del Pokémon");
-      }
 
       if (result) {
         result.innerHTML = `
           <div class="pokemon-card">
             ${shiny ? '<div class="shiny-indicator">✨ SHINY</div>' : ""}
             <div class="pokemon-image">
-              <img src="${imageUrl}" alt="${pokemon.name}${shiny ? " (shiny)" : ""}" onerror="this.src='${pokemon.sprites.front_default}'" />
+              <img src="${imageUrl}" alt="${pokemon.name}${shiny ? " (shiny)" : ""}" />
             </div>
             <div class="pokemon-info">
               <h3 class="pokemon-name">${pokemon.name}</h3>
