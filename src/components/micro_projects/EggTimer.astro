@@ -1,68 +1,305 @@
 <div class="egg-timer">
-  <div class="timer-display">
-    <span id="timer-display">00:00</span>
-  </div>
-  <div class="timer-controls">
-    <button id="soft-egg" class="timer-btn">Suave (3min)</button>
-    <button id="medium-egg" class="timer-btn">Medio (6min)</button>
-    <button id="hard-egg" class="timer-btn">Duro (9min)</button>
-  </div>
-  <div class="timer-actions">
-    <button id="start-timer" class="action-btn start">Iniciar</button>
-    <button id="stop-timer" class="action-btn stop">Detener</button>
+  <div class="timer-main">
+    <!-- Huevo visual -->
+    <div class="egg-container">
+      <div class="egg-visual" id="eggVisual">
+        <div class="egg-white">
+          <div class="egg-yolk" id="eggYolk"></div>
+        </div>
+        <div class="egg-shell-top"></div>
+        <div class="egg-shell-bottom"></div>
+      </div>
+
+      <!-- Timer superpuesto -->
+      <div class="timer-overlay">
+        <span id="timer-display">00:00</span>
+      </div>
+    </div>
+
+    <!-- Controles compactos -->
+    <div class="controls-panel">
+      <!-- Tipos de huevo -->
+      <div class="egg-types-compact">
+        <button
+          id="soft-egg"
+          class="egg-type-compact active"
+          data-type="soft"
+          title="Huevo Blando - 3min"
+        >
+          <span class="type-icon">🟡</span>
+        </button>
+        <button
+          id="medium-egg"
+          class="egg-type-compact"
+          data-type="medium"
+          title="Huevo Medio - 6min"
+        >
+          <span class="type-icon">🟠</span>
+        </button>
+        <button
+          id="hard-egg"
+          class="egg-type-compact"
+          data-type="hard"
+          title="Huevo Duro - 9min"
+        >
+          <span class="type-icon">🔴</span>
+        </button>
+      </div>
+
+      <!-- Acciones del timer -->
+      <div class="timer-actions-compact">
+        <button
+          id="start-timer"
+          class="action-btn-compact start"
+          title="Iniciar Timer"
+        >
+          ▶️
+        </button>
+        <button
+          id="stop-timer"
+          class="action-btn-compact stop"
+          disabled
+          title="Detener Timer"
+        >
+          ⏸️
+        </button>
+        <button
+          id="reset-timer"
+          class="action-btn-compact reset"
+          title="Reiniciar Timer"
+        >
+          🔄
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 
 <style>
   .egg-timer {
-    text-align: center;
     padding: 1rem;
-  }
-
-  .timer-display {
-    font-size: 3rem;
-    font-weight: bold;
-    color: var(--cristal);
-    margin: 1rem 0;
-  }
-
-  .timer-controls {
+    max-width: 100%;
+    height: 100%;
     display: flex;
-    gap: 0.5rem;
+    align-items: center;
     justify-content: center;
-    margin: 1rem 0;
+  }
+
+  /* Layout principal horizontal */
+  .timer-main {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    justify-content: center;
     flex-wrap: wrap;
   }
 
-  .timer-btn {
-    padding: 0.5rem 1rem;
-    background: transparent;
-    border: 1px solid var(--oro);
-    color: var(--oro);
-    border-radius: var(--radius);
-    cursor: pointer;
-    transition: all var(--transition);
+  /* Contenedor del huevo visual */
+  .egg-container {
+    position: relative;
+    width: 100px;
+    height: 120px;
+    flex-shrink: 0;
   }
 
-  .timer-btn:hover {
-    background: var(--oro);
-    color: var(--abismo);
+  /* Huevo partido visual */
+  .egg-visual {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    overflow: hidden;
+    border: 3px solid #f4f4f4;
+    background: #fff;
+    box-shadow:
+      0 8px 20px rgba(0, 0, 0, 0.2),
+      inset 0 2px 4px rgba(255, 255, 255, 0.8);
+    transition: all 0.3s ease;
   }
 
-  .timer-actions {
+  .egg-visual:hover {
+    transform: scale(1.05);
+  }
+
+  /* Clara del huevo */
+  .egg-white {
+    position: absolute;
+    top: 20%;
+    left: 10%;
+    right: 10%;
+    bottom: 15%;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  /* Yema del huevo */
+  .egg-yolk {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 35px;
+    height: 30px;
+    background: #ffeb3b;
+    border-radius: 50%;
+    border: 2px solid #ffc107;
+    transition: all 0.5s ease;
+    box-shadow:
+      0 2px 8px rgba(255, 193, 7, 0.4),
+      inset 0 2px 4px rgba(255, 255, 255, 0.3);
+  }
+
+  /* Estados de la yema según tipo de huevo */
+  .egg-yolk.soft {
+    background: #ffeb3b;
+    border-color: #ffc107;
+    box-shadow:
+      0 2px 8px rgba(255, 193, 7, 0.4),
+      inset 0 2px 4px rgba(255, 255, 255, 0.3);
+  }
+
+  .egg-yolk.medium {
+    background: #ff9800;
+    border-color: #f57f17;
+    box-shadow:
+      0 2px 8px rgba(255, 152, 0, 0.4),
+      inset 0 2px 4px rgba(255, 255, 255, 0.3);
+  }
+
+  .egg-yolk.hard {
+    background: #ff5722;
+    border-color: #d84315;
+    box-shadow:
+      0 2px 8px rgba(255, 87, 34, 0.4),
+      inset 0 2px 4px rgba(255, 255, 255, 0.3);
+  }
+
+  /* Cáscara partida superior */
+  .egg-shell-top {
+    position: absolute;
+    top: -5px;
+    left: 20%;
+    right: 25%;
+    height: 20px;
+    background: #f5f5f5;
+    border-radius: 50% 50% 0 0;
+    border: 2px solid #e0e0e0;
+    border-bottom: none;
+    transform: rotate(-5deg);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Cáscara partida inferior */
+  .egg-shell-bottom {
+    position: absolute;
+    bottom: -5px;
+    right: 20%;
+    left: 25%;
+    height: 15px;
+    background: #f5f5f5;
+    border-radius: 0 0 50% 50%;
+    border: 2px solid #e0e0e0;
+    border-top: none;
+    transform: rotate(3deg);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Timer superpuesto */
+  .timer-overlay {
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(10, 25, 47, 0.95);
+    color: var(--cristal);
+    padding: 0.4rem 0.8rem;
+    border-radius: 15px;
+    border: 1px solid var(--cristal);
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 0.9rem;
+    min-width: 70px;
+    box-shadow: 0 4px 12px rgba(100, 255, 218, 0.3);
+    text-align: center;
+  }
+
+  /* Panel de controles */
+  .controls-panel {
     display: flex;
+    flex-direction: column;
     gap: 1rem;
-    justify-content: center;
-    margin-top: 1rem;
+    align-items: center;
   }
 
-  .action-btn {
-    padding: 0.75rem 1.5rem;
+  /* Tipos de huevo compactos */
+  .egg-types-compact {
+    display: flex;
+    gap: 0.4rem;
+    background: rgba(30, 58, 95, 0.2);
+    padding: 0.3rem;
+    border-radius: 25px;
+    border: 1px solid rgba(100, 255, 218, 0.2);
+  }
+
+  .egg-type-compact {
+    width: 35px;
+    height: 35px;
     border: none;
-    border-radius: var(--radius);
+    border-radius: 50%;
+    background: rgba(30, 58, 95, 0.3);
     cursor: pointer;
-    font-weight: 500;
     transition: all var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .egg-type-compact:hover {
+    background: rgba(30, 58, 95, 0.5);
+    transform: scale(1.1);
+  }
+
+  .egg-type-compact.active {
+    background: var(--cristal);
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(100, 255, 218, 0.5);
+  }
+
+  .type-icon {
+    font-size: 1.2rem;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  }
+
+  /* Acciones del timer compactas */
+  .timer-actions-compact {
+    display: flex;
+    gap: 0.4rem;
+    background: rgba(30, 58, 95, 0.2);
+    padding: 0.3rem;
+    border-radius: 25px;
+    border: 1px solid rgba(100, 255, 218, 0.2);
+  }
+
+  .action-btn-compact {
+    width: 35px;
+    height: 35px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+  }
+
+  .action-btn-compact:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
   }
 
   .start {
@@ -70,10 +307,10 @@
     color: var(--abismo);
   }
 
-  .start:hover {
-    background: transparent;
-    color: var(--cristal);
-    border: 1px solid var(--cristal);
+  .start:hover:not(:disabled) {
+    background: var(--oro);
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(100, 255, 218, 0.5);
   }
 
   .stop {
@@ -81,66 +318,258 @@
     color: white;
   }
 
-  .stop:hover {
-    background: transparent;
-    color: #ff6b6b;
-    border: 1px solid #ff6b6b;
+  .stop:hover:not(:disabled) {
+    background: #ff5252;
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+  }
+
+  .reset {
+    background: var(--oro);
+    color: var(--abismo);
+  }
+
+  .reset:hover:not(:disabled) {
+    background: #ffc107;
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+  }
+
+  /* Animación de parpadeo cuando termina */
+  .timer-finished {
+    animation: pulse 1s infinite;
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      transform: scale(1);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+    50% {
+      transform: scale(1.05);
+      box-shadow: 0 12px 30px rgba(100, 255, 218, 0.4);
+    }
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    .timer-main {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .egg-container {
+      width: 90px;
+      height: 110px;
+    }
+
+    .timer-overlay {
+      font-size: 0.8rem;
+      padding: 0.3rem 0.6rem;
+      bottom: -20px;
+    }
+
+    .controls-panel {
+      gap: 0.8rem;
+    }
+
+    .egg-type-compact,
+    .action-btn-compact {
+      width: 32px;
+      height: 32px;
+      font-size: 0.8rem;
+    }
+
+    .type-icon {
+      font-size: 1rem;
+    }
   }
 </style>
 
 <script>
+  // Configuración de tipos de huevo (en segundos)
+  const eggTypes = {
+    soft: 180, // 3 minutos - huevo blando
+    medium: 360, // 6 minutos - huevo medio
+    hard: 540, // 9 minutos - huevo duro
+  };
+
   let timer: number | null = null;
   let timeLeft = 0;
+  let currentType: keyof typeof eggTypes = "soft";
+  let isRunning = false;
 
+  // Elementos del DOM
   const display = document.getElementById("timer-display");
-  const startBtn = document.getElementById("start-timer");
-  const stopBtn = document.getElementById("stop-timer");
+  const eggYolk = document.getElementById("eggYolk");
+  const eggVisual = document.getElementById("eggVisual");
+  const startBtn = document.getElementById("start-timer") as HTMLButtonElement;
+  const stopBtn = document.getElementById("stop-timer") as HTMLButtonElement;
+  const resetBtn = document.getElementById("reset-timer") as HTMLButtonElement;
 
-  function updateDisplay() {
-    const minutes = Math.floor(timeLeft / 60);
-    const seconds = timeLeft % 60;
+  // Función para formatear tiempo
+  function formatTime(seconds: number): string {
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${minutes.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+  }
+
+  // Actualizar display del timer
+  function updateDisplay(): void {
     if (display) {
-      display.textContent = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+      display.textContent = formatTime(timeLeft);
     }
   }
 
-  function startTimer() {
-    if (timeLeft <= 0) return;
+  // Cambiar color de la yema según el tipo
+  function updateEggColor(type: keyof typeof eggTypes): void {
+    if (eggYolk) {
+      eggYolk.className = `egg-yolk ${type}`;
+    }
+  }
+
+  // Iniciar timer
+  function startTimer(): void {
+    if (timeLeft <= 0) {
+      timeLeft = eggTypes[currentType];
+    }
+
+    if (isRunning) return;
+
+    isRunning = true;
+    startBtn.disabled = true;
+    stopBtn.disabled = false;
 
     timer = window.setInterval(() => {
       timeLeft--;
       updateDisplay();
 
       if (timeLeft <= 0) {
-        stopTimer();
-        alert("¡Tiempo terminado! Tu huevo está listo 🥚");
+        finishTimer();
       }
     }, 1000);
   }
 
-  function stopTimer() {
+  // Detener timer
+  function stopTimer(): void {
     if (timer) {
       clearInterval(timer);
       timer = null;
     }
+    isRunning = false;
+    startBtn.disabled = false;
+    stopBtn.disabled = true;
   }
 
-  // Event listeners
-  document.getElementById("soft-egg")?.addEventListener("click", () => {
-    timeLeft = 180; // 3 minutes
+  // Reiniciar timer
+  function resetTimer(): void {
+    stopTimer();
+    timeLeft = eggTypes[currentType];
     updateDisplay();
+
+    // Remover animación si existe
+    if (eggVisual) {
+      eggVisual.classList.remove("timer-finished");
+    }
+  }
+
+  // Finalizar timer
+  function finishTimer(): void {
+    stopTimer();
+
+    // Animación de finalización
+    if (eggVisual) {
+      eggVisual.classList.add("timer-finished");
+    }
+
+    // Notificación
+    if ("Notification" in window && Notification.permission === "granted") {
+      new Notification("🥚 ¡Huevo listo!", {
+        body: `Tu huevo ${currentType === "soft" ? "blando" : currentType === "medium" ? "medio" : "duro"} está perfecto`,
+        icon: "/favicon.svg",
+      });
+    }
+
+    // Sonido de notificación
+    playNotificationSound();
+
+    // Alert de respaldo
+    setTimeout(() => {
+      alert(
+        `🥚 ¡Tu huevo ${currentType === "soft" ? "blando" : currentType === "medium" ? "medio" : "duro"} está listo!`
+      );
+    }, 100);
+  }
+
+  // Reproducir sonido de notificación
+  function playNotificationSound(): void {
+    try {
+      const audioContext = new (window.AudioContext ||
+        (window as any).webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+
+      oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+      oscillator.frequency.setValueAtTime(600, audioContext.currentTime + 0.1);
+      oscillator.frequency.setValueAtTime(800, audioContext.currentTime + 0.2);
+
+      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(
+        0.01,
+        audioContext.currentTime + 0.3
+      );
+
+      oscillator.start();
+      oscillator.stop(audioContext.currentTime + 0.3);
+    } catch (error) {
+      console.log("No se pudo reproducir el sonido de notificación");
+    }
+  }
+
+  // Solicitar permisos de notificación
+  function requestNotificationPermission(): void {
+    if ("Notification" in window && Notification.permission === "default") {
+      Notification.requestPermission();
+    }
+  }
+
+  // Event listeners para botones de tipo de huevo
+  document.querySelectorAll(".egg-type-compact").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const type = (btn as HTMLElement).dataset.type as keyof typeof eggTypes;
+
+      if (type && !isRunning) {
+        currentType = type;
+
+        // Actualizar UI
+        document
+          .querySelectorAll(".egg-type-compact")
+          .forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        // Actualizar color y timer
+        updateEggColor(type);
+        resetTimer();
+      }
+    });
   });
 
-  document.getElementById("medium-egg")?.addEventListener("click", () => {
-    timeLeft = 360; // 6 minutes
-    updateDisplay();
-  });
-
-  document.getElementById("hard-egg")?.addEventListener("click", () => {
-    timeLeft = 540; // 9 minutes
-    updateDisplay();
-  });
-
+  // Event listeners para controles
   startBtn?.addEventListener("click", startTimer);
   stopBtn?.addEventListener("click", stopTimer);
+  resetBtn?.addEventListener("click", resetTimer);
+
+  // Inicialización
+  function initialize(): void {
+    updateEggColor(currentType);
+    resetTimer();
+    requestNotificationPermission();
+  }
+
+  // Inicializar cuando se carga el componente
+  initialize();
 </script>
