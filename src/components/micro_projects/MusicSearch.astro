@@ -1,0 +1,737 @@
+<div class="music-search">
+  <div class="search-container">
+    <div class="search-input">
+      <input
+        type="text"
+        id="music-input"
+        placeholder="Busca canciones, artistas o álbumes..."
+        autocomplete="off"
+      />
+      <button id="search-music-btn">🔍</button>
+    </div>
+  </div>
+
+  <div id="music-result" class="music-result">
+    <div class="placeholder">
+      <span class="icon">🎵</span>
+      <p>Busca música para descubrir nuevas canciones</p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .music-search {
+    max-width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .search-container {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+
+  .search-input {
+    display: flex;
+    gap: 0.5rem;
+    position: relative;
+  }
+
+  #music-input {
+    flex: 1;
+    padding: 0.75rem;
+    border: 2px solid rgba(100, 255, 218, 0.3);
+    background: rgba(10, 25, 47, 0.5);
+    color: var(--luz);
+    border-radius: var(--radius);
+    font-size: 0.9rem;
+    transition: all var(--transition);
+  }
+
+  #music-input:focus {
+    outline: none;
+    border-color: var(--cristal);
+    box-shadow: 0 0 0 3px rgba(100, 255, 218, 0.2);
+    background: rgba(10, 25, 47, 0.7);
+  }
+
+  #search-music-btn {
+    padding: 0.75rem 1rem;
+    background: var(--cristal);
+    color: var(--abismo);
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: 500;
+    transition: all var(--transition);
+    font-size: 1rem;
+    min-width: 50px;
+  }
+
+  #search-music-btn:hover {
+    background: var(--oro);
+    transform: scale(1.05);
+  }
+
+  #search-music-btn:active {
+    transform: scale(0.95);
+  }
+
+  .music-result {
+    flex: 1;
+    text-align: center;
+    padding: 1.5rem;
+    border: 2px solid rgba(100, 255, 218, 0.2);
+    border-radius: var(--radius);
+    background: linear-gradient(
+      135deg,
+      rgba(30, 58, 95, 0.3),
+      rgba(10, 25, 47, 0.5)
+    );
+    min-height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .music-result:hover {
+    border-color: rgba(100, 255, 218, 0.4);
+    background: linear-gradient(
+      135deg,
+      rgba(30, 58, 95, 0.4),
+      rgba(10, 25, 47, 0.6)
+    );
+  }
+
+  .placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    opacity: 0.6;
+  }
+
+  .placeholder .icon {
+    font-size: 2.5rem;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 0.6;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  .track-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-align: left;
+    width: 100%;
+    animation: fadeIn 0.5s ease-out;
+    background: rgba(30, 58, 95, 0.2);
+    padding: 1rem;
+    border-radius: var(--radius);
+    border: 1px solid rgba(100, 255, 218, 0.2);
+    transition: all var(--transition);
+  }
+
+  .track-card:hover {
+    background: rgba(30, 58, 95, 0.3);
+    border-color: rgba(100, 255, 218, 0.4);
+    transform: translateY(-2px);
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .album-cover {
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(
+      circle,
+      rgba(100, 255, 218, 0.2),
+      rgba(100, 255, 218, 0.05)
+    );
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(100, 255, 218, 0.3);
+    transition: all var(--transition);
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .album-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 6px;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+    transition: transform var(--transition);
+  }
+
+  .album-cover:hover img {
+    transform: scale(1.1);
+  }
+
+  .track-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .track-name {
+    color: var(--cristal);
+    font-weight: bold;
+    font-size: 1rem;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .track-artist {
+    color: var(--oro);
+    font-size: 0.85rem;
+    opacity: 0.9;
+  }
+
+  .track-album {
+    color: var(--luz);
+    font-size: 0.75rem;
+    opacity: 0.7;
+  }
+
+  .track-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  .play-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background: var(--cristal);
+    color: var(--abismo);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    transition: all var(--transition);
+  }
+
+  .play-btn:hover {
+    background: var(--oro);
+    transform: scale(1.1);
+  }
+
+  .play-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .track-duration {
+    font-size: 0.7rem;
+    color: var(--luz);
+    opacity: 0.8;
+  }
+
+  .loading {
+    color: var(--oro);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .loading::after {
+    content: "";
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--oro);
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .error {
+    color: #ff6b6b;
+    font-size: 0.9rem;
+  }
+
+  .demo-note {
+    margin-top: 1rem;
+    font-size: 0.7rem;
+    opacity: 0.5;
+    font-style: italic;
+    text-align: center;
+  }
+
+  /* Audio player */
+  .audio-player {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(10, 25, 47, 0.95);
+    border: 1px solid var(--cristal);
+    border-radius: 12px;
+    padding: 1rem;
+    min-width: 250px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    display: none;
+    z-index: 100;
+  }
+
+  .audio-player.active {
+    display: block;
+    animation: slideUp 0.3s ease-out;
+  }
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .player-track {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .player-cover {
+    width: 50px;
+    height: 50px;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .player-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .player-info {
+    flex: 1;
+  }
+
+  .player-title {
+    color: var(--cristal);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .player-artist {
+    color: var(--oro);
+    font-size: 0.8rem;
+    opacity: 0.9;
+  }
+
+  .player-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .player-btn {
+    width: 35px;
+    height: 35px;
+    border: none;
+    border-radius: 50%;
+    background: var(--cristal);
+    color: var(--abismo);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    transition: all var(--transition);
+  }
+
+  .player-btn:hover {
+    background: var(--oro);
+  }
+
+  .progress-bar {
+    flex: 1;
+    height: 4px;
+    background: rgba(100, 255, 218, 0.2);
+    border-radius: 2px;
+    overflow: hidden;
+    margin: 0 0.5rem;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--cristal);
+    width: 0%;
+    transition: width 0.1s ease;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .track-card {
+      flex-direction: column;
+      text-align: center;
+      gap: 0.8rem;
+    }
+
+    .track-info {
+      align-items: center;
+    }
+
+    .audio-player {
+      bottom: 10px;
+      right: 10px;
+      left: 10px;
+      min-width: auto;
+    }
+  }
+</style>
+
+<script>
+  const input = document.getElementById("music-input") as HTMLInputElement;
+  const searchBtn = document.getElementById("search-music-btn");
+  const result = document.getElementById("music-result");
+
+  let currentAudio: HTMLAudioElement | null = null;
+  let currentTrack: any = null;
+
+  // Función para obtener token de acceso de Spotify (Client Credentials Flow)
+  async function getSpotifyToken(): Promise<string | null> {
+    try {
+      // NOTA: En producción, esto debería hacerse en el backend por seguridad
+      // Para demo, usaremos la búsqueda pública sin token por ahora
+
+      // Spotify permite algunas búsquedas sin autenticación, pero con limitaciones
+      // En un proyecto real, necesitarías:
+      // 1. Registrar tu app en Spotify Developer
+      // 2. Obtener Client ID y Client Secret
+      // 3. Implementar OAuth flow en el backend
+
+      return null; // Por ahora sin token
+    } catch (error) {
+      console.error("Error getting Spotify token:", error);
+      return null;
+    }
+  }
+
+  // Función para buscar música
+  async function searchMusic(): Promise<void> {
+    const query = input.value.trim();
+    if (!query) return;
+
+    if (result)
+      result.innerHTML = '<div class="loading">Buscando música...</div>';
+
+    try {
+      // Para esta demo, usaremos datos simulados de Spotify
+      // En producción, usarías la API real con autenticación
+
+      // Simular delay de red
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // Datos de demo que representan respuesta de Spotify API
+      const demoTracks = [
+        {
+          id: "1",
+          name: "Shape of You",
+          artists: [{ name: "Ed Sheeran" }],
+          album: {
+            name: "÷ (Deluxe)",
+            images: [
+              {
+                url: "https://i.scdn.co/image/ab67616d0000b273ba5db46f4b838ef6027e6f96",
+              },
+            ],
+          },
+          duration_ms: 233713,
+          preview_url:
+            "https://p.scdn.co/mp3-preview/c6f7da8bd0c1b1fa0d0e9c7a2e2b8f5e6f5e5e5e",
+          external_urls: {
+            spotify: "https://open.spotify.com/track/7qiZfU4dY1lWllzX7mPBI3",
+          },
+        },
+        {
+          id: "2",
+          name: "Blinding Lights",
+          artists: [{ name: "The Weeknd" }],
+          album: {
+            name: "After Hours",
+            images: [
+              {
+                url: "https://i.scdn.co/image/ab67616d0000b2738863bc11d2aa12b54f5aeb36",
+              },
+            ],
+          },
+          duration_ms: 200040,
+          preview_url: null, // Algunos tracks no tienen preview
+          external_urls: {
+            spotify: "https://open.spotify.com/track/0VjIjW4GlULA9t9bFpX5xf",
+          },
+        },
+      ];
+
+      if (demoTracks.length > 0) {
+        displayTrack(demoTracks[0]); // Mostrar la primera canción
+      } else {
+        if (result) {
+          result.innerHTML =
+            '<div class="error">No se encontraron canciones. Intenta con otra búsqueda.</div>';
+        }
+      }
+
+      /* 
+      // Código para API real de Spotify (cuando tengas las credenciales):
+      const token = await getSpotifyToken();
+      const searchUrl = `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=track&limit=1`;
+      
+      const response = await fetch(searchUrl, {
+        headers: {
+          'Authorization': token ? `Bearer ${token}` : '',
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Error en la búsqueda');
+      }
+
+      const data = await response.json();
+      
+      if (data.tracks.items.length > 0) {
+        displayTrack(data.tracks.items[0]);
+      } else {
+        if (result) {
+          result.innerHTML = '<div class="error">No se encontraron canciones. Intenta con otra búsqueda.</div>';
+        }
+      }
+      */
+    } catch (error) {
+      console.error("Error searching music:", error);
+      if (result) {
+        result.innerHTML =
+          '<div class="error">Error al buscar música. Intenta de nuevo.</div>';
+      }
+    }
+  }
+
+  // Función para mostrar una canción
+  function displayTrack(track: any): void {
+    const duration = formatDuration(track.duration_ms);
+    const albumImage = track.album.images?.[0]?.url || "";
+    const hasPreview = track.preview_url !== null;
+
+    if (result) {
+      result.innerHTML = `
+        <div class="track-card">
+          <div class="album-cover">
+            ${
+              albumImage
+                ? `<img src="${albumImage}" alt="${track.album.name}" />`
+                : '<span style="font-size: 1.5rem;">🎵</span>'
+            }
+          </div>
+          <div class="track-info">
+            <h3 class="track-name">${track.name}</h3>
+            <div class="track-artist">${track.artists.map((a: any) => a.name).join(", ")}</div>
+            <div class="track-album">${track.album.name}</div>
+          </div>
+          <div class="track-controls">
+            <button class="play-btn" onclick="playTrack('${track.id}', '${track.preview_url}', '${track.name}', '${track.artists[0].name}', '${albumImage}')" ${!hasPreview ? "disabled" : ""}>
+              ${hasPreview ? "▶️" : "🔒"}
+            </button>
+            <div class="track-duration">${duration}</div>
+          </div>
+        </div>
+        <div class="demo-note">
+          * Demo con datos simulados de Spotify API<br>
+          ${!hasPreview ? "Preview no disponible para esta canción" : "Click para reproducir preview de 30s"}
+        </div>
+      `;
+    }
+  }
+
+  // Función para reproducir una canción
+  function playTrack(
+    id: string,
+    previewUrl: string,
+    name: string,
+    artist: string,
+    image: string
+  ): void {
+    if (!previewUrl) return;
+
+    // Detener audio actual si existe
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio = null;
+    }
+
+    // Crear nuevo audio
+    currentAudio = new Audio(previewUrl);
+    currentTrack = { id, name, artist, image };
+
+    // Mostrar player
+    showAudioPlayer();
+
+    // Reproducir
+    currentAudio.play().catch((error) => {
+      console.error("Error playing audio:", error);
+      alert(
+        "Error al reproducir la canción. Algunos navegadores requieren interacción del usuario primero."
+      );
+    });
+
+    // Event listeners para el audio
+    currentAudio.addEventListener("timeupdate", updateProgress);
+    currentAudio.addEventListener("ended", () => {
+      hideAudioPlayer();
+    });
+  }
+
+  // Mostrar reproductor
+  function showAudioPlayer(): void {
+    let player = document.getElementById("audioPlayer");
+    if (!player) {
+      player = document.createElement("div");
+      player.id = "audioPlayer";
+      player.className = "audio-player";
+      document.body.appendChild(player);
+    }
+
+    if (currentTrack) {
+      player.innerHTML = `
+        <div class="player-track">
+          <div class="player-cover">
+            ${
+              currentTrack.image
+                ? `<img src="${currentTrack.image}" alt="${currentTrack.name}" />`
+                : '<div style="background: var(--cristal); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">🎵</div>'
+            }
+          </div>
+          <div class="player-info">
+            <div class="player-title">${currentTrack.name}</div>
+            <div class="player-artist">${currentTrack.artist}</div>
+          </div>
+        </div>
+        <div class="player-controls">
+          <button class="player-btn" onclick="togglePlayPause()">⏸️</button>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <button class="player-btn" onclick="stopAudio()">⏹️</button>
+        </div>
+      `;
+    }
+
+    player.classList.add("active");
+  }
+
+  // Ocultar reproductor
+  function hideAudioPlayer(): void {
+    const player = document.getElementById("audioPlayer");
+    if (player) {
+      player.classList.remove("active");
+    }
+  }
+
+  // Toggle play/pause
+  function togglePlayPause(): void {
+    if (!currentAudio) return;
+
+    if (currentAudio.paused) {
+      currentAudio.play();
+      const btn = document.querySelector(".player-controls .player-btn");
+      if (btn) btn.textContent = "⏸️";
+    } else {
+      currentAudio.pause();
+      const btn = document.querySelector(".player-controls .player-btn");
+      if (btn) btn.textContent = "▶️";
+    }
+  }
+
+  // Detener audio
+  function stopAudio(): void {
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
+      currentAudio = null;
+    }
+    hideAudioPlayer();
+  }
+
+  // Actualizar barra de progreso
+  function updateProgress(): void {
+    if (!currentAudio) return;
+
+    const progress = (currentAudio.currentTime / currentAudio.duration) * 100;
+    const progressFill = document.getElementById("progressFill");
+    if (progressFill) {
+      progressFill.style.width = `${progress}%`;
+    }
+  }
+
+  // Formatear duración
+  function formatDuration(ms: number): string {
+    const minutes = Math.floor(ms / 60000);
+    const seconds = Math.floor((ms % 60000) / 1000);
+    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+  }
+
+  // Event listeners
+  input?.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      searchMusic();
+    }
+  });
+
+  searchBtn?.addEventListener("click", (e) => {
+    e.preventDefault();
+    searchMusic();
+  });
+
+  // Hacer funciones globales para onClick
+  (window as any).playTrack = playTrack;
+  (window as any).togglePlayPause = togglePlayPause;
+  (window as any).stopAudio = stopAudio;
+</script>

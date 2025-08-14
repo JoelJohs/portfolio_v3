@@ -1,0 +1,366 @@
+---
+// Componente Generador de Códigos QR
+---
+
+<div class="qr-generator-container">
+  <div class="qr-header">
+    <div class="input-group">
+      <input
+        type="text"
+        id="qr-input"
+        placeholder="Escribe texto o URL..."
+        value="https://github.com/JoelJohs"
+        class="qr-input"
+      />
+      <button id="generate-qr" class="generate-qr-btn"> 📱 Generar QR </button>
+    </div>
+    <div class="qr-options">
+      <select id="qr-size" class="size-select">
+        <option value="200">200x200</option>
+        <option value="300" selected>300x300</option>
+        <option value="400">400x400</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="qr-display" id="qr-display">
+    <div class="qr-placeholder">
+      <div class="qr-icon">📱</div>
+      <p>Introduce texto o URL y genera tu código QR</p>
+    </div>
+  </div>
+
+  <div class="qr-actions">
+    <button id="download-qr" class="download-btn" style="display: none;">
+      💾 Descargar PNG
+    </button>
+    <div class="qr-info" id="qr-info" style="display: none;">
+      <span id="qr-text-info"></span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .qr-generator-container,
+  .qr-generator-container *,
+  .qr-generator-container *:before,
+  .qr-generator-container *:after {
+    box-sizing: border-box;
+  }
+
+  .qr-generator-container {
+    background: rgba(10, 25, 47, 0.7);
+    border: 1px solid rgba(100, 255, 218, 0.2);
+    border-radius: 12px;
+    overflow: hidden;
+    height: 480px;
+    min-height: 480px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .qr-header {
+    padding: 1.2rem;
+    background: rgba(30, 58, 95, 0.3);
+    border-bottom: 1px solid rgba(100, 255, 218, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .input-group {
+    display: flex;
+    gap: 0.8rem;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .qr-input {
+    flex: 1;
+    background: rgba(10, 25, 47, 0.8);
+    border: 1px solid rgba(100, 255, 218, 0.3);
+    border-radius: 8px;
+    padding: 0.8rem 1rem;
+    color: var(--luz);
+    font-size: 0.9rem;
+    min-width: 0;
+  }
+
+  .qr-input:focus {
+    outline: none;
+    border-color: var(--cristal);
+    box-shadow: 0 0 0 2px rgba(100, 255, 218, 0.2);
+  }
+
+  .generate-qr-btn,
+  .download-btn {
+    background: rgba(100, 255, 218, 0.1);
+    border: 1px solid rgba(100, 255, 218, 0.3);
+    color: var(--cristal);
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .generate-qr-btn:hover,
+  .download-btn:hover {
+    background: rgba(100, 255, 218, 0.2);
+    transform: translateY(-1px);
+  }
+
+  .size-select {
+    background: rgba(10, 25, 47, 0.8);
+    border: 1px solid rgba(100, 255, 218, 0.3);
+    border-radius: 8px;
+    padding: 0.8rem 1rem;
+    color: var(--luz);
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+
+  .size-select:focus {
+    outline: none;
+    border-color: var(--cristal);
+  }
+
+  .qr-display {
+    flex: 1;
+    margin: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed rgba(100, 255, 218, 0.2);
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .qr-placeholder {
+    text-align: center;
+    color: var(--luz);
+    opacity: 0.6;
+  }
+
+  .qr-placeholder .qr-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .qr-placeholder p {
+    font-size: 0.8rem;
+    margin: 0;
+  }
+
+  .qr-code-img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 4px;
+    background: white;
+    padding: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .qr-actions {
+    padding: 0.8rem;
+    background: rgba(5, 12, 23, 0.5);
+    border-top: 1px solid rgba(100, 255, 218, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .qr-info {
+    font-size: 0.7rem;
+    color: var(--luz);
+    opacity: 0.8;
+    flex: 1;
+    text-align: right;
+  }
+
+  .download-btn {
+    background: rgba(255, 215, 0, 0.1);
+    border-color: rgba(255, 215, 0, 0.3);
+    color: #ffd700;
+  }
+
+  .download-btn:hover {
+    background: rgba(255, 215, 0, 0.2);
+  }
+
+  /* Responsividad */
+  @media (max-width: 768px) {
+    .qr-header {
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 0.6rem;
+    }
+
+    .input-group {
+      width: 100%;
+    }
+
+    .qr-input {
+      font-size: 0.75rem;
+    }
+
+    .generate-qr-btn {
+      padding: 0.4rem 0.6rem;
+      font-size: 0.7rem;
+    }
+
+    .qr-actions {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .qr-info {
+      text-align: center;
+      font-size: 0.65rem;
+    }
+  }
+</style>
+
+<script>
+  const qrInput = document.getElementById("qr-input");
+  const generateBtn = document.getElementById("generate-qr");
+  const downloadBtn = document.getElementById("download-qr");
+  const sizeSelect = document.getElementById("qr-size");
+  const qrDisplay = document.getElementById("qr-display");
+  const qrInfo = document.getElementById("qr-info");
+  const qrTextInfo = document.getElementById("qr-text-info");
+
+  let currentQRDataURL = "";
+
+  function generateQR() {
+    const text = (qrInput as HTMLInputElement)?.value.trim();
+    const size = (sizeSelect as HTMLSelectElement)?.value || "300";
+
+    if (!text) {
+      alert("Por favor, introduce algún texto o URL");
+      return;
+    }
+
+    // Usar API pública para generar QR
+    const qrURL = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(text)}`;
+
+    // Mostrar loading
+    if (qrDisplay) {
+      qrDisplay.innerHTML = `
+        <div class="qr-placeholder">
+          <div class="qr-icon">⏳</div>
+          <p>Generando código QR...</p>
+        </div>
+      `;
+    }
+
+    // Crear imagen
+    const img = new Image();
+    img.onload = function () {
+      if (qrDisplay) {
+        qrDisplay.innerHTML = "";
+        img.className = "qr-code-img";
+        qrDisplay.appendChild(img);
+      }
+
+      currentQRDataURL = qrURL;
+
+      // Mostrar botón de descarga e info
+      if (downloadBtn) downloadBtn.style.display = "block";
+      if (qrInfo) qrInfo.style.display = "block";
+      if (qrTextInfo) {
+        const truncatedText =
+          text.length > 30 ? text.substring(0, 30) + "..." : text;
+        qrTextInfo.textContent = `"${truncatedText}"`;
+      }
+
+      // Animación de éxito
+      if (generateBtn) {
+        generateBtn.textContent = "✅ Generado";
+        generateBtn.style.background = "rgba(76, 175, 80, 0.2)";
+        generateBtn.style.borderColor = "rgba(76, 175, 80, 0.5)";
+        generateBtn.style.color = "#4caf50";
+
+        setTimeout(() => {
+          generateBtn.textContent = "📱 Generar QR";
+          generateBtn.style.background = "";
+          generateBtn.style.borderColor = "";
+          generateBtn.style.color = "";
+        }, 2000);
+      }
+    };
+
+    img.onerror = function () {
+      if (qrDisplay) {
+        qrDisplay.innerHTML = `
+          <div class="qr-placeholder">
+            <div class="qr-icon">❌</div>
+            <p>Error al generar el código QR</p>
+          </div>
+        `;
+      }
+    };
+
+    img.src = qrURL;
+  }
+
+  async function downloadQR() {
+    if (!currentQRDataURL) return;
+
+    try {
+      const response = await fetch(currentQRDataURL);
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "codigo-qr.png";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      // Confirmación visual
+      if (downloadBtn) {
+        const originalText = downloadBtn.textContent;
+        downloadBtn.textContent = "✅ Descargado";
+        downloadBtn.style.background = "rgba(76, 175, 80, 0.2)";
+
+        setTimeout(() => {
+          downloadBtn.textContent = originalText;
+          downloadBtn.style.background = "";
+        }, 2000);
+      }
+    } catch (error) {
+      console.error("Error al descargar:", error);
+      alert("Error al descargar la imagen");
+    }
+  }
+
+  // Event listeners
+  generateBtn?.addEventListener("click", generateQR);
+  downloadBtn?.addEventListener("click", downloadQR);
+
+  // Generar QR al presionar Enter
+  qrInput?.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      generateQR();
+    }
+  });
+
+  // Regenerar cuando cambie el tamaño
+  sizeSelect?.addEventListener("change", () => {
+    if ((qrInput as HTMLInputElement)?.value.trim()) {
+      generateQR();
+    }
+  });
+
+  // Generar QR inicial
+  generateQR();
+</script>

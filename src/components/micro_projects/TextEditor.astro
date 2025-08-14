@@ -1,0 +1,256 @@
+---
+
+---
+
+<div class="text-editor-container">
+  <div class="editor-content">
+    <textarea
+      id="textEditor"
+      placeholder="Comienza a escribir tu texto aquí..."
+      rows="8"></textarea>
+
+    <div class="editor-stats">
+      <div class="stat-item">
+        <span class="stat-label">Caracteres:</span>
+        <span id="charCount">0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Palabras:</span>
+        <span id="wordCount">0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Líneas:</span>
+        <span id="lineCount">1</span>
+      </div>
+    </div>
+
+    <div class="editor-actions">
+      <button id="clearText" class="btn btn-secondary"> 🗑️ Limpiar </button>
+      <button id="downloadText" class="btn btn-primary">
+        💾 Descargar TXT
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .text-editor-container,
+  .text-editor-container *,
+  .text-editor-container *:before,
+  .text-editor-container *:after {
+    box-sizing: border-box;
+  }
+
+  .text-editor-container {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    overflow: visible;
+    height: 100%;
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .editor-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    flex: 1;
+    height: 100%;
+  }
+
+  #textEditor {
+    width: 100%;
+    flex: 1;
+    min-height: 200px;
+    padding: 1rem;
+    background: rgba(10, 25, 47, 0.8);
+    border: 1px solid rgba(100, 255, 218, 0.3);
+    border-radius: 8px;
+    color: var(--luz);
+    font-family: "Courier New", monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    resize: vertical;
+  }
+
+  #textEditor:focus {
+    outline: none;
+    border-color: var(--cristal);
+    box-shadow: 0 0 0 2px rgba(100, 255, 218, 0.2);
+  }
+
+  #textEditor::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .editor-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(30, 58, 95, 0.3);
+    border: 1px solid rgba(100, 255, 218, 0.1);
+    border-radius: 8px;
+  }
+
+  .stat-item {
+    text-align: center;
+  }
+
+  .stat-label {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--luz);
+    opacity: 0.8;
+    margin-bottom: 0.3rem;
+  }
+
+  .stat-item span:last-child {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--cristal);
+  }
+
+  .editor-actions {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .btn {
+    flex: 1;
+    background: rgba(100, 255, 218, 0.1);
+    border: 1px solid rgba(100, 255, 218, 0.3);
+    color: var(--cristal);
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .btn:hover {
+    background: rgba(100, 255, 218, 0.2);
+    transform: translateY(-1px);
+  }
+
+  .btn-primary {
+    background: rgba(255, 215, 0, 0.1);
+    border-color: rgba(255, 215, 0, 0.3);
+    color: #ffd700;
+  }
+
+  .btn-primary:hover {
+    background: rgba(255, 215, 0, 0.2);
+  }
+
+  .btn:active {
+    transform: translateY(0);
+  }
+
+  /* Responsividad */
+  @media (max-width: 768px) {
+    .editor-content {
+      gap: 1rem;
+    }
+
+    .editor-stats {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+      padding: 0.8rem;
+    }
+
+    .stat-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .stat-label {
+      margin-bottom: 0;
+    }
+
+    #textEditor {
+      min-height: 150px;
+      font-size: 0.85rem;
+    }
+
+    .editor-actions {
+      flex-direction: column;
+    }
+  }
+</style>
+
+<script>
+  const textEditor = document.getElementById(
+    "textEditor"
+  ) as HTMLTextAreaElement;
+  const charCount = document.getElementById("charCount") as HTMLSpanElement;
+  const wordCount = document.getElementById("wordCount") as HTMLSpanElement;
+  const lineCount = document.getElementById("lineCount") as HTMLSpanElement;
+  const clearBtn = document.getElementById("clearText") as HTMLButtonElement;
+  const downloadBtn = document.getElementById(
+    "downloadText"
+  ) as HTMLButtonElement;
+
+  function updateStats() {
+    const text = textEditor.value;
+
+    // Character count
+    charCount.textContent = text.length.toString();
+
+    // Word count
+    const words = text
+      .trim()
+      .split(/\s+/)
+      .filter((word) => word.length > 0);
+    wordCount.textContent = words.length.toString();
+
+    // Line count
+    const lines = text.split("\n").length;
+    lineCount.textContent = lines.toString();
+  }
+
+  function clearText() {
+    if (textEditor.value.trim() === "") return;
+
+    if (confirm("¿Estás seguro de que quieres limpiar todo el texto?")) {
+      textEditor.value = "";
+      updateStats();
+      textEditor.focus();
+    }
+  }
+
+  function downloadText() {
+    const text = textEditor.value;
+
+    if (text.trim() === "") {
+      alert("No hay texto para descargar. Escribe algo primero.");
+      return;
+    }
+
+    const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = `texto_${new Date().getTime()}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
+
+  // Event listeners
+  textEditor.addEventListener("input", updateStats);
+  textEditor.addEventListener("paste", () => setTimeout(updateStats, 10));
+  clearBtn.addEventListener("click", clearText);
+  downloadBtn.addEventListener("click", downloadText);
+
+  // Initialize
+  updateStats();
+</script>

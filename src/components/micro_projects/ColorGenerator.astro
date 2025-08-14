@@ -1,0 +1,357 @@
+---
+// Componente Generador de Colores Hex y Gradientes
+---
+
+<div class="color-generator-container">
+  <div class="generator-header">
+    <div class="generator-controls">
+      <button id="generate-colors" class="generate-btn"> 🎨 Generar </button>
+      <button id="copy-gradient" class="copy-btn"> 📋 Copiar CSS </button>
+    </div>
+    <div class="gradient-type">
+      <select id="gradient-direction" class="direction-select">
+        <option value="to right">→ Horizontal</option>
+        <option value="to bottom">↓ Vertical</option>
+        <option value="45deg">↗ Diagonal</option>
+        <option value="to bottom right">↘ Diagonal 2</option>
+        <option value="radial">⚪ Radial</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="color-preview" id="color-preview">
+    <!-- El gradiente se mostrará aquí -->
+  </div>
+
+  <div class="color-info">
+    <div class="color-values">
+      <div class="color-hex">
+        <span class="color-label">Color 1:</span>
+        <span id="color1-hex">#FF6B6B</span>
+      </div>
+      <div class="color-hex">
+        <span class="color-label">Color 2:</span>
+        <span id="color2-hex">#4ECDC4</span>
+      </div>
+    </div>
+    <div class="css-code" id="css-code">
+      background: linear-gradient(to right, #FF6B6B, #4ECDC4);
+    </div>
+  </div>
+</div>
+
+<style>
+  .color-generator-container,
+  .color-generator-container *,
+  .color-generator-container *:before,
+  .color-generator-container *:after {
+    box-sizing: border-box;
+  }
+
+  .color-generator-container {
+    background: rgba(10, 25, 47, 0.7);
+    border: 1px solid rgba(100, 255, 218, 0.2);
+    border-radius: 12px;
+    overflow: hidden;
+    height: 480px;
+    min-height: 480px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .generator-header {
+    padding: 1.2rem;
+    background: rgba(30, 58, 95, 0.3);
+    border-bottom: 1px solid rgba(100, 255, 218, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .generator-controls {
+    display: flex;
+    gap: 0.8rem;
+  }
+
+  .generate-btn,
+  .copy-btn {
+    background: rgba(100, 255, 218, 0.1);
+    border: 1px solid rgba(100, 255, 218, 0.3);
+    color: var(--cristal);
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .generate-btn:hover,
+  .copy-btn:hover {
+    background: rgba(100, 255, 218, 0.2);
+    transform: translateY(-1px);
+  }
+
+  .direction-select {
+    background: rgba(10, 25, 47, 0.8);
+    border: 1px solid rgba(100, 255, 218, 0.3);
+    border-radius: 6px;
+    padding: 0.4rem 0.6rem;
+    color: var(--luz);
+    font-size: 0.75rem;
+    cursor: pointer;
+  }
+
+  .direction-select:focus {
+    outline: none;
+    border-color: var(--cristal);
+    box-shadow: 0 0 0 2px rgba(100, 255, 218, 0.2);
+  }
+
+  .color-preview {
+    flex: 1;
+    margin: 1.5rem;
+    border-radius: 12px;
+    background: linear-gradient(to right, #ff6b6b, #4ecdc4);
+    border: 1px solid rgba(100, 255, 218, 0.2);
+    position: relative;
+    overflow: hidden;
+    min-height: 200px;
+  }
+
+  .color-preview::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        circle at 20% 80%,
+        rgba(255, 255, 255, 0.1) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 80% 20%,
+        rgba(255, 255, 255, 0.1) 0%,
+        transparent 50%
+      );
+    pointer-events: none;
+  }
+
+  .color-info {
+    padding: 1.2rem;
+    background: rgba(5, 12, 23, 0.5);
+    border-top: 1px solid rgba(100, 255, 218, 0.1);
+  }
+
+  .color-values {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 1rem;
+    gap: 1rem;
+  }
+
+  .color-hex {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+  }
+
+  .color-label {
+    font-size: 0.7rem;
+    color: var(--luz);
+    opacity: 0.8;
+  }
+
+  .color-hex span:last-child {
+    font-family: "Courier New", monospace;
+    font-size: 0.8rem;
+    color: var(--cristal);
+    font-weight: bold;
+    background: rgba(100, 255, 218, 0.1);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .color-hex span:last-child:hover {
+    background: rgba(100, 255, 218, 0.2);
+  }
+
+  .css-code {
+    font-family: "Courier New", monospace;
+    font-size: 0.7rem;
+    color: var(--luz);
+    background: rgba(10, 25, 47, 0.5);
+    padding: 0.5rem;
+    border-radius: 4px;
+    text-align: center;
+    border: 1px solid rgba(100, 255, 218, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .css-code:hover {
+    background: rgba(10, 25, 47, 0.8);
+    border-color: rgba(100, 255, 218, 0.3);
+  }
+
+  /* Responsividad */
+  @media (max-width: 768px) {
+    .generator-header {
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 0.6rem;
+    }
+
+    .generator-controls {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .generate-btn,
+    .copy-btn {
+      flex: 1;
+      max-width: 120px;
+    }
+
+    .color-values {
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .css-code {
+      font-size: 0.65rem;
+      word-break: break-all;
+    }
+  }
+</style>
+
+<script>
+  const generateBtn = document.getElementById("generate-colors");
+  const copyBtn = document.getElementById("copy-gradient");
+  const directionSelect = document.getElementById("gradient-direction");
+  const colorPreview = document.getElementById("color-preview");
+  const color1Hex = document.getElementById("color1-hex");
+  const color2Hex = document.getElementById("color2-hex");
+  const cssCode = document.getElementById("css-code");
+
+  let currentColor1 = "#FF6B6B";
+  let currentColor2 = "#4ECDC4";
+
+  function generateRandomHex() {
+    const chars = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += chars[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+
+  function updateGradient() {
+    const direction = (directionSelect as HTMLSelectElement)?.value;
+    let gradientCSS;
+
+    if (direction === "radial") {
+      gradientCSS = `radial-gradient(circle, ${currentColor1}, ${currentColor2})`;
+    } else {
+      gradientCSS = `linear-gradient(${direction}, ${currentColor1}, ${currentColor2})`;
+    }
+
+    if (colorPreview) {
+      colorPreview.style.background = gradientCSS;
+    }
+
+    // Actualizar el código CSS mostrado
+    if (cssCode) {
+      cssCode.textContent = `background: ${gradientCSS};`;
+    }
+  }
+
+  function generateColors() {
+    currentColor1 = generateRandomHex();
+    currentColor2 = generateRandomHex();
+
+    if (color1Hex) color1Hex.textContent = currentColor1;
+    if (color2Hex) color2Hex.textContent = currentColor2;
+
+    updateGradient();
+
+    // Animación de generación
+    if (generateBtn) {
+      generateBtn.textContent = "✨ Generado";
+      generateBtn.style.background = "rgba(255, 215, 0, 0.2)";
+      generateBtn.style.borderColor = "rgba(255, 215, 0, 0.5)";
+      generateBtn.style.color = "#ffd700";
+
+      setTimeout(() => {
+        if (generateBtn) {
+          generateBtn.textContent = "🎨 Generar";
+          generateBtn.style.background = "";
+          generateBtn.style.borderColor = "";
+          generateBtn.style.color = "";
+        }
+      }, 1000);
+    }
+  }
+
+  async function copyGradient() {
+    try {
+      if (cssCode) {
+        await navigator.clipboard.writeText(cssCode.textContent || "");
+      }
+
+      // Confirmación visual
+      if (copyBtn) {
+        copyBtn.textContent = "✅ Copiado";
+        copyBtn.style.background = "rgba(76, 175, 80, 0.2)";
+        copyBtn.style.borderColor = "rgba(76, 175, 80, 0.5)";
+        copyBtn.style.color = "#4caf50";
+
+        setTimeout(() => {
+          if (copyBtn) {
+            copyBtn.textContent = "📋 Copiar CSS";
+            copyBtn.style.background = "";
+            copyBtn.style.borderColor = "";
+            copyBtn.style.color = "";
+          }
+        }, 2000);
+      }
+    } catch (err) {
+      console.error("Error al copiar:", err);
+      alert("No se pudo copiar al portapapeles");
+    }
+  }
+
+  function copyColorToClipboard(colorElement: HTMLElement) {
+    const color = colorElement.textContent;
+    if (color) {
+      navigator.clipboard.writeText(color).then(() => {
+        const originalBg = colorElement.style.background;
+        colorElement.style.background = "rgba(76, 175, 80, 0.3)";
+        setTimeout(() => {
+          colorElement.style.background = originalBg;
+        }, 500);
+      });
+    }
+  }
+
+  // Event listeners
+  generateBtn?.addEventListener("click", generateColors);
+  copyBtn?.addEventListener("click", copyGradient);
+  directionSelect?.addEventListener("change", updateGradient);
+
+  // Copiar colores individuales al hacer clic
+  color1Hex?.addEventListener("click", () => copyColorToClipboard(color1Hex));
+  color2Hex?.addEventListener("click", () => copyColorToClipboard(color2Hex));
+
+  // Copiar CSS al hacer clic en el código
+  cssCode?.addEventListener("click", copyGradient);
+
+  // Generar colores iniciales
+  generateColors();
+</script>

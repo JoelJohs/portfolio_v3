@@ -3,6 +3,9 @@ import MicroProjectsLayout from "../layouts/MicroProjectsLayout.astro";
 import EggTimer from "../components/micro_projects/EggTimer.astro";
 import PokemonSearch from "../components/micro_projects/PokemonSearch.astro";
 import WeatherLocal from "../components/micro_projects/WeatherLocal.astro";
+import TextEditor from "../components/micro_projects/TextEditor.astro";
+import ColorGenerator from "../components/micro_projects/ColorGenerator.astro";
+import QRGenerator from "../components/micro_projects/QRGenerator.astro";
 ---
 
 <MicroProjectsLayout title="Mini Proyectos - Joel Johs">
@@ -17,81 +20,89 @@ import WeatherLocal from "../components/micro_projects/WeatherLocal.astro";
 
   <!-- Sección de Mini Proyectos -->
   <section class="microprojects-section">
-    <div class="container">
-      <div class="microprojects-grid">
-        <div class="project-card">
-          <div class="badge api">API</div>
-          <div class="project-header">
-            <h3>🌤️ Clima Local</h3>
-            <p>Consulta el clima actual de tu ubicación en tiempo real</p>
-          </div>
-          <WeatherLocal />
-          <div class="project-actions">
-            <button class="view-code-btn" data-project="weather-local">
-              👁️ Ver Código
-            </button>
-          </div>
+    <!-- Sin container aquí para que las cards abarquen todo el ancho -->
+    <div class="microprojects-grid">
+      <div class="project-card">
+        <div class="badge api">API</div>
+        <div class="project-header">
+          <h3>🌤️ Clima Local</h3>
+          <p>Consulta el clima actual de tu ubicación en tiempo real</p>
         </div>
-
-        <div class="project-card">
-          <div class="badge api">API</div>
-          <div class="project-header">
-            <h3>🔍 Buscador Pokémon</h3>
-            <p>Descubre cualquier Pokémon con posibilidad de encontrar shiny</p>
-          </div>
-          <PokemonSearch />
-          <div class="project-actions">
-            <button class="view-code-btn" data-project="pokemon-search">
-              👁️ Ver Código
-            </button>
-          </div>
+        <WeatherLocal />
+        <div class="project-actions">
+          <button class="view-code-btn" data-project="weather-local">
+            👁️ Ver Código
+          </button>
         </div>
+      </div>
 
-        <div class="project-card">
-          <div class="badge app">APP</div>
-          <div class="project-header">
-            <h3>🥚 Temporizador de Huevos</h3>
-            <p>Cocina huevos perfectos con diferentes tiempos</p>
-          </div>
-          <EggTimer />
-          <div class="project-actions">
-            <button class="view-code-btn" data-project="egg-timer">
-              👁️ Ver Código
-            </button>
-          </div>
+      <div class="project-card">
+        <div class="badge api">API</div>
+        <div class="project-header">
+          <h3>🔍 Buscador Pokémon</h3>
+          <p>Descubre cualquier Pokémon con posibilidad de encontrar shiny</p>
         </div>
-
-        <div class="project-card coming-soon">
-          <div class="badge app">APP</div>
-          <div class="project-header">
-            <h3>🎯 Calculadora</h3>
-            <p>Calculadora con funciones avanzadas</p>
-          </div>
-          <div class="coming-soon-content">
-            <span>Próximamente</span>
-          </div>
+        <PokemonSearch />
+        <div class="project-actions">
+          <button class="view-code-btn" data-project="pokemon-search">
+            👁️ Ver Código
+          </button>
         </div>
+      </div>
 
-        <div class="project-card coming-soon">
-          <div class="badge app">APP</div>
-          <div class="project-header">
-            <h3>📝 Editor de Texto</h3>
-            <p>Editor de markdown en tiempo real</p>
-          </div>
-          <div class="coming-soon-content">
-            <span>En desarrollo</span>
-          </div>
+      <div class="project-card">
+        <div class="badge app">APP</div>
+        <div class="project-header">
+          <h3>🥚 Temporizador de Huevos</h3>
+          <p>Cocina huevos perfectos con diferentes tiempos</p>
         </div>
+        <EggTimer />
+        <div class="project-actions">
+          <button class="view-code-btn" data-project="egg-timer">
+            👁️ Ver Código
+          </button>
+        </div>
+      </div>
 
-        <div class="project-card coming-soon">
-          <div class="badge api">API</div>
-          <div class="project-header">
-            <h3>🎵 Música</h3>
-            <p>Reproductor y búsqueda de música</p>
-          </div>
-          <div class="coming-soon-content">
-            <span>Próximamente</span>
-          </div>
+      <div class="project-card">
+        <div class="badge app">APP</div>
+        <div class="project-header">
+          <h3>� Generador de Colores</h3>
+          <p>Genera gradientes hex aleatorios y copia el CSS</p>
+        </div>
+        <ColorGenerator />
+        <div class="project-actions">
+          <button class="view-code-btn" data-project="color-generator">
+            👁️ Ver Código
+          </button>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="badge app">APP</div>
+        <div class="project-header">
+          <h3>📝 Editor de Texto</h3>
+          <p>Editor de txt en tiempo real</p>
+        </div>
+        <TextEditor />
+        <div class="project-actions">
+          <button class="view-code-btn" data-project="text-editor">
+            👁️ Ver Código
+          </button>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="badge app">APP</div>
+        <div class="project-header">
+          <h3>📱 Generador de QR</h3>
+          <p>Genera códigos QR desde texto o URLs</p>
+        </div>
+        <QRGenerator />
+        <div class="project-actions">
+          <button class="view-code-btn" data-project="qr-generator">
+            👁️ Ver Código
+          </button>
         </div>
       </div>
 
@@ -99,372 +110,404 @@ import WeatherLocal from "../components/micro_projects/WeatherLocal.astro";
         <a href="/" class="btn-back">← Volver al Portfolio</a>
       </div>
     </div>
-  </section>
+    <!-- Cerrar sin container -->
 
-  <!-- Modal de código -->
-  <div class="code-modal" id="codeModal">
-    <div class="code-modal-content">
-      <div class="code-modal-header">
-        <h3 id="modalTitle">Código del Proyecto</h3>
-        <button class="close-modal" id="closeModal">✕</button>
-      </div>
-      <div class="code-modal-body">
-        <div class="code-block" id="codeContent">
-          <!-- El código se cargará aquí -->
+    <!-- Modal de código -->
+    <div class="code-modal" id="codeModal">
+      <div class="code-modal-content">
+        <div class="code-modal-header">
+          <h3 id="modalTitle">Código del Proyecto</h3>
+          <button class="close-modal" id="closeModal">✕</button>
+        </div>
+        <div class="code-modal-body">
+          <div class="code-block" id="codeContent">
+            <!-- El código se cargará aquí -->
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</MicroProjectsLayout>
+  </section>
 
-<style>
-  .hero-microprojects {
-    padding: 6rem 0 3rem;
-    text-align: center;
-    background: linear-gradient(
-      135deg,
-      rgba(10, 25, 47, 0.9),
-      rgba(30, 58, 95, 0.6)
-    );
-  }
-
-  .hero-microprojects h1 {
-    font-size: clamp(2.5rem, 6vw, 4rem);
-    background: linear-gradient(135deg, var(--cristal), var(--oro));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 1rem;
-  }
-
-  .subtitle {
-    font-size: 1.2rem;
-    color: var(--luz);
-    opacity: 0.9;
-    max-width: 700px;
-    margin: 0 auto;
-    line-height: 1.6;
-  }
-
-  /* Sección de Mini Proyectos */
-  .microprojects-section {
-    padding: 4rem 0;
-    background: rgba(5, 12, 23, 0.3);
-  }
-
-  .microprojects-section h2 {
-    text-align: center;
-    margin-bottom: 3rem;
-    font-size: 2rem;
-    color: var(--cristal);
-  }
-
-  .microprojects-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
-
-  .project-card {
-    background: linear-gradient(
-      135deg,
-      rgba(30, 58, 95, 0.4),
-      rgba(10, 25, 47, 0.7)
-    );
-    border-radius: 16px;
-    padding: 2rem;
-    border: 1px solid rgba(100, 255, 218, 0.2);
-    transition: all 0.4s ease;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    min-height: 350px;
-  }
-
-  .project-card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--cristal), var(--oro));
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-
-  .project-card:hover {
-    transform: translateY(-8px);
-    border-color: rgba(100, 255, 218, 0.4);
-    box-shadow:
-      0 20px 40px rgba(0, 0, 0, 0.3),
-      0 0 30px rgba(100, 255, 218, 0.1);
-  }
-
-  .project-card:hover::before {
-    opacity: 1;
-  }
-
-  /* Badges */
-  .badge {
-    position: absolute;
-    top: -0.5rem;
-    right: -0.5rem;
-    padding: 0.4rem 0.9rem;
-    border-radius: 20px;
-    font-size: 0.7rem;
-    font-weight: bold;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    z-index: 2;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  }
-
-  .badge.api {
-    background: linear-gradient(135deg, #00d4aa, #00c7a3);
-    color: var(--abismo);
-  }
-
-  .badge.app {
-    background: linear-gradient(135deg, #ffd700, #ffed4e);
-    color: var(--abismo);
-  }
-
-  .project-header {
-    margin-bottom: 1.5rem;
-    text-align: center;
-  }
-
-  .project-header h3 {
-    font-size: 1.3rem;
-    color: var(--cristal);
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-  }
-
-  .project-header p {
-    color: var(--luz);
-    opacity: 0.8;
-    font-size: 0.9rem;
-    line-height: 1.4;
-  }
-
-  /* Coming soon cards */
-  .coming-soon {
-    opacity: 0.7;
-  }
-
-  .coming-soon-content {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--oro);
-    font-style: italic;
-    font-weight: 500;
-    font-size: 1.1rem;
-  }
-
-  /* Acciones del proyecto */
-  .project-actions {
-    margin-top: auto;
-    padding-top: 1rem;
-    text-align: center;
-  }
-
-  .view-code-btn {
-    background: rgba(100, 255, 218, 0.1);
-    border: 1px solid rgba(100, 255, 218, 0.3);
-    color: var(--cristal);
-    padding: 0.6rem 1.2rem;
-    border-radius: var(--radius);
-    cursor: pointer;
-    font-size: 0.85rem;
-    font-weight: 500;
-    transition: all var(--transition);
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .view-code-btn:hover {
-    background: rgba(100, 255, 218, 0.2);
-    border-color: rgba(100, 255, 218, 0.5);
-    transform: translateY(-2px);
-  }
-
-  /* Modal de código */
-  .code-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    padding: 2rem;
-    backdrop-filter: blur(4px);
-  }
-
-  .code-modal.active {
-    display: flex;
-  }
-
-  .code-modal-content {
-    background: var(--abismo);
-    border: 1px solid rgba(100, 255, 218, 0.3);
-    border-radius: 12px;
-    width: 90%;
-    max-width: 800px;
-    max-height: 80vh;
-    overflow: hidden;
-    position: relative;
-  }
-
-  .code-modal-header {
-    padding: 1.5rem;
-    border-bottom: 1px solid rgba(100, 255, 218, 0.2);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: rgba(30, 58, 95, 0.3);
-  }
-
-  .code-modal-header h3 {
-    color: var(--cristal);
-    margin: 0;
-    font-size: 1.2rem;
-  }
-
-  .close-modal {
-    background: none;
-    border: none;
-    color: var(--luz);
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: var(--radius);
-    transition: all var(--transition);
-  }
-
-  .close-modal:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: var(--cristal);
-  }
-
-  .code-modal-body {
-    padding: 1.5rem;
-    overflow-y: auto;
-    max-height: calc(80vh - 120px);
-  }
-
-  .code-block {
-    background: rgba(10, 25, 47, 0.7);
-    border: 1px solid rgba(100, 255, 218, 0.2);
-    border-radius: var(--radius);
-    padding: 1rem;
-    font-family: "Fira Code", "Courier New", monospace;
-    font-size: 0.85rem;
-    line-height: 1.5;
-    color: var(--luz);
-    white-space: pre-wrap;
-    overflow-x: auto;
-  }
-
-  /* Botón de regreso */
-  .back-link {
-    text-align: center;
-    margin-top: 3rem;
-  }
-
-  .btn-back {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 1rem 2rem;
-    background: linear-gradient(135deg, var(--cristal), var(--oro));
-    color: var(--abismo);
-    text-decoration: none;
-    border-radius: 50px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(100, 255, 218, 0.3);
-  }
-
-  .btn-back:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(100, 255, 218, 0.4);
-    background: linear-gradient(135deg, var(--oro), var(--cristal));
-  }
-
-  /* Responsividad */
-  @media (max-width: 1200px) {
-    .microprojects-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 2rem;
-    }
-  }
-
-  @media (max-width: 768px) {
+  <style>
     .hero-microprojects {
-      padding: 4rem 0 2rem;
+      padding: 6rem 0 3rem;
+      text-align: center;
+      background: linear-gradient(
+        135deg,
+        rgba(10, 25, 47, 0.9),
+        rgba(30, 58, 95, 0.6)
+      );
     }
 
-    .microprojects-grid {
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
-
-    .project-card {
-      padding: 1.5rem;
-      min-height: 300px;
-    }
-
-    .badge {
-      top: -0.3rem;
-      right: -0.3rem;
-      padding: 0.3rem 0.7rem;
-      font-size: 0.65rem;
-    }
-  }
-
-  @media (max-width: 480px) {
     .hero-microprojects h1 {
-      font-size: 2rem;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      background: linear-gradient(135deg, var(--cristal), var(--oro));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
     }
 
     .subtitle {
-      font-size: 1rem;
-      padding: 0 1rem;
+      font-size: 1.2rem;
+      color: var(--luz);
+      opacity: 0.9;
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* Sección de Mini Proyectos */
+    .microprojects-section {
+      padding: 4rem 0;
+      background: rgba(5, 12, 23, 0.3);
+    }
+
+    .microprojects-section h2 {
+      text-align: center;
+      margin-bottom: 3rem;
+      font-size: 2rem;
+      color: var(--cristal);
+    }
+
+    .microprojects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3rem;
+      max-width: none;
+      margin: 0;
+      padding: 0 4rem;
+      width: 100%;
     }
 
     .project-card {
-      padding: 1rem;
-      min-height: 280px;
+      background: linear-gradient(
+        135deg,
+        rgba(30, 58, 95, 0.4),
+        rgba(10, 25, 47, 0.7)
+      );
+      border-radius: 16px;
+      padding: 2.5rem;
+      border: 1px solid rgba(100, 255, 218, 0.2);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 480px;
+    }
+
+    .project-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--cristal), var(--oro));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .project-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(100, 255, 218, 0.4);
+      box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        0 0 30px rgba(100, 255, 218, 0.1);
+    }
+
+    .project-card:hover::before {
+      opacity: 1;
+    }
+
+    /* Badges */
+    .badge {
+      position: absolute;
+      top: -0.5rem;
+      right: -0.5rem;
+      padding: 0.4rem 0.9rem;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      z-index: 2;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .badge.api {
+      background: linear-gradient(135deg, #00d4aa, #00c7a3);
+      color: var(--abismo);
+    }
+
+    .badge.app {
+      background: linear-gradient(135deg, #ffd700, #ffed4e);
+      color: var(--abismo);
+    }
+
+    .project-header {
+      margin-bottom: 1.5rem;
+      text-align: center;
     }
 
     .project-header h3 {
-      font-size: 1.1rem;
+      font-size: 1.3rem;
+      color: var(--cristal);
+      margin-bottom: 0.5rem;
+      font-weight: 600;
     }
 
     .project-header p {
-      font-size: 0.85rem;
+      color: var(--luz);
+      opacity: 0.8;
+      font-size: 0.9rem;
+      line-height: 1.4;
     }
-  }
-</style>
 
-<script>
-  // Configuración de códigos de ejemplo
-  const projectCodes = {
-    "weather-local": {
-      title: "🌤️ Clima Local - Código Vanilla JS",
-      code: `// Obtener clima usando Geolocation API
+    /* Coming soon cards */
+    .coming-soon {
+      opacity: 0.7;
+    }
+
+    .coming-soon-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--oro);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 1.1rem;
+    }
+
+    /* Acciones del proyecto */
+    .project-actions {
+      margin-top: auto;
+      padding-top: 1rem;
+      text-align: center;
+    }
+
+    .view-code-btn {
+      background: rgba(100, 255, 218, 0.1);
+      border: 1px solid rgba(100, 255, 218, 0.3);
+      color: var(--cristal);
+      padding: 0.6rem 1.2rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: all var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .view-code-btn:hover {
+      background: rgba(100, 255, 218, 0.2);
+      border-color: rgba(100, 255, 218, 0.5);
+      transform: translateY(-2px);
+    }
+
+    /* Modal de código */
+    .code-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 2rem;
+      backdrop-filter: blur(4px);
+    }
+
+    .code-modal.active {
+      display: flex;
+    }
+
+    .code-modal-content {
+      background: var(--abismo);
+      border: 1px solid rgba(100, 255, 218, 0.3);
+      border-radius: 12px;
+      width: 90%;
+      max-width: 800px;
+      max-height: 80vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .code-modal-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid rgba(100, 255, 218, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(30, 58, 95, 0.3);
+    }
+
+    .code-modal-header h3 {
+      color: var(--cristal);
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .close-modal {
+      background: none;
+      border: none;
+      color: var(--luz);
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: var(--radius);
+      transition: all var(--transition);
+    }
+
+    .close-modal:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--cristal);
+    }
+
+    .code-modal-body {
+      padding: 1.5rem;
+      overflow-y: auto;
+      max-height: calc(80vh - 120px);
+    }
+
+    .code-block {
+      background: rgba(10, 25, 47, 0.7);
+      border: 1px solid rgba(100, 255, 218, 0.2);
+      border-radius: var(--radius);
+      padding: 1rem;
+      font-family: "Fira Code", "Courier New", monospace;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: var(--luz);
+      white-space: pre-wrap;
+      overflow-x: auto;
+    }
+
+    /* Botón de regreso */
+    .back-link {
+      grid-column: 1 / -1;
+      text-align: center;
+      margin-top: 3rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, var(--cristal), var(--oro));
+      color: var(--abismo);
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(100, 255, 218, 0.3);
+    }
+
+    .btn-back:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(100, 255, 218, 0.4);
+      background: linear-gradient(135deg, var(--oro), var(--cristal));
+    }
+
+    /* Responsividad */
+    @media (max-width: 1400px) {
+      .microprojects-grid {
+        padding: 0 3rem;
+      }
+    }
+
+    @media (max-width: 1200px) {
+      .microprojects-grid {
+        padding: 0 2rem;
+        gap: 2.5rem;
+      }
+    }
+
+    @media (max-width: 1000px) {
+      .microprojects-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+        padding: 0 2rem;
+      }
+
+      .project-card {
+        min-height: 420px;
+        padding: 2rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero-microprojects {
+        padding: 4rem 0 2rem;
+      }
+
+      .microprojects-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 0 1rem;
+        max-width: 100%;
+      }
+
+      .project-card {
+        padding: 1.5rem;
+        min-height: 350px;
+      }
+
+      .badge {
+        top: -0.3rem;
+        right: -0.3rem;
+        padding: 0.3rem 0.7rem;
+        font-size: 0.65rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-microprojects h1 {
+        font-size: 2rem;
+      }
+
+      .subtitle {
+        font-size: 1rem;
+        padding: 0 1rem;
+      }
+
+      .microprojects-grid {
+        gap: 1rem;
+        padding: 0 0.5rem;
+      }
+
+      .project-card {
+        padding: 1rem;
+        min-height: 320px;
+      }
+
+      .project-header h3 {
+        font-size: 1.1rem;
+      }
+
+      .project-header p {
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+
+  <script>
+    // Configuración de códigos de ejemplo
+    const projectCodes = {
+      "weather-local": {
+        title: "🌤️ Clima Local - Código Vanilla JS",
+        code: `// Obtener clima usando Geolocation API
 const getWeatherBtn = document.getElementById('get-weather');
 const weatherResult = document.getElementById('weather-result');
 
@@ -533,10 +576,10 @@ async function getWeather() {
 }
 
 getWeatherBtn?.addEventListener('click', getWeather);`,
-    },
-    "pokemon-search": {
-      title: "🔍 Buscador Pokémon - Código Vanilla JS",
-      code: `// Buscador de Pokémon con PokéAPI
+      },
+      "pokemon-search": {
+        title: "🔍 Buscador Pokémon - Código Vanilla JS",
+        code: `// Buscador de Pokémon con PokéAPI
 const input = document.getElementById('pokemon-input');
 const searchBtn = document.getElementById('search-btn');
 const result = document.getElementById('pokemon-result');
@@ -612,10 +655,10 @@ input?.addEventListener('keypress', (e) => {
 });
 
 searchBtn?.addEventListener('click', searchPokemon);`,
-    },
-    "egg-timer": {
-      title: "🥚 Temporizador de Huevos - Código Vanilla JS",
-      code: `// Temporizador de huevos con diferentes tipos
+      },
+      "egg-timer": {
+        title: "🥚 Temporizador de Huevos - Código Vanilla JS",
+        code: `// Temporizador de huevos con diferentes tipos
 const timerDisplay = document.getElementById('timer-display');
 const startBtn = document.getElementById('start-timer');
 const stopBtn = document.getElementById('stop-timer');
@@ -725,50 +768,313 @@ resetBtn?.addEventListener('click', resetTimer);
 
 // Inicializar
 resetTimer();`,
-    },
-  };
+      },
+      "text-editor": {
+        title: "📝 Editor de Texto - Código Vanilla JS",
+        code: `// Editor de texto con descarga de archivos
+const textArea = document.getElementById('text-editor');
+const fileNameInput = document.getElementById('file-name');
+const saveBtn = document.getElementById('save-file');
+const clearBtn = document.getElementById('clear-text');
+const charCount = document.getElementById('char-count');
+const wordCount = document.getElementById('word-count');
+const lineCount = document.getElementById('line-count');
 
-  // Funcionalidad del modal
-  const modal = document.getElementById("codeModal");
-  const modalTitle = document.getElementById("modalTitle");
-  const codeContent = document.getElementById("codeContent");
-  const closeModal = document.getElementById("closeModal");
+function updateStats() {
+  const text = textArea.value;
+  const chars = text.length;
+  const words = text.trim() ? text.trim().split(/\\s+/).length : 0;
+  const lines = text.split('\\n').length;
 
-  // Abrir modal
-  document.querySelectorAll(".view-code-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const projectId = (btn as HTMLElement).dataset.project;
-      const project = projectCodes[projectId as keyof typeof projectCodes];
+  charCount.textContent = chars;
+  wordCount.textContent = \`\${words} palabra\${words !== 1 ? 's' : ''}\`;
+  lineCount.textContent = \`\${lines} línea\${lines !== 1 ? 's' : ''}\`;
+}
 
-      if (project && modal && modalTitle && codeContent) {
-        modalTitle.textContent = project.title;
-        codeContent.textContent = project.code;
-        modal.classList.add("active");
-        document.body.style.overflow = "hidden";
-      }
-    });
-  });
-
-  // Cerrar modal
-  function closeModalHandler() {
-    if (modal) {
-      modal.classList.remove("active");
-      document.body.style.overflow = "auto";
-    }
+function saveFile() {
+  const text = textArea.value;
+  const fileName = fileNameInput.value.trim() || 'documento';
+  
+  if (!text.trim()) {
+    alert('El editor está vacío. Escribe algo antes de guardar.');
+    return;
   }
 
-  closeModal?.addEventListener("click", closeModalHandler);
+  // Crear el archivo y descargarlo usando Blob API
+  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  
+  link.href = url;
+  link.download = \`\${fileName}.txt\`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
 
-  modal?.addEventListener("click", (e) => {
-    if (e.target === modal) {
-      closeModalHandler();
-    }
-  });
+  // Mostrar confirmación visual
+  const originalText = saveBtn.textContent;
+  saveBtn.textContent = '✅ Guardado';
+  saveBtn.style.background = 'rgba(76, 175, 80, 0.2)';
+  
+  setTimeout(() => {
+    saveBtn.textContent = originalText;
+    saveBtn.style.background = '';
+  }, 2000);
+}
 
-  // Cerrar con ESC
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && modal?.classList.contains("active")) {
-      closeModalHandler();
+function clearText() {
+  if (textArea.value.trim() && 
+      !confirm('¿Estás seguro de que quieres limpiar todo el texto?')) {
+    return;
+  }
+  
+  textArea.value = '';
+  textArea.focus();
+  updateStats();
+}
+
+// Event listeners
+textArea?.addEventListener('input', updateStats);
+
+// Atajo de teclado Ctrl+S para guardar
+textArea?.addEventListener('keydown', (e) => {
+  if (e.ctrlKey && e.key === 's') {
+    e.preventDefault();
+    saveFile();
+  }
+});
+
+saveBtn?.addEventListener('click', saveFile);
+clearBtn?.addEventListener('click', clearText);
+
+// Validar nombre de archivo (remover caracteres especiales)
+fileNameInput?.addEventListener('input', (e) => {
+  let value = e.target.value;
+  value = value.replace(/[<>:"/\\\\|?*]/g, '');
+  if (value !== e.target.value) {
+    e.target.value = value;
+  }
+});
+
+// Inicializar estadísticas
+updateStats();`,
+      },
+      "color-generator": {
+        title: "🎨 Generador de Colores - Código Vanilla JS",
+        code: `// Generador de colores hex aleatorios con gradientes
+const generateBtn = document.getElementById('generate-colors');
+const copyBtn = document.getElementById('copy-gradient');
+const directionSelect = document.getElementById('gradient-direction');
+const colorPreview = document.getElementById('color-preview');
+const color1Hex = document.getElementById('color1-hex');
+const color2Hex = document.getElementById('color2-hex');
+const cssCode = document.getElementById('css-code');
+
+let currentColor1 = '#FF6B6B';
+let currentColor2 = '#4ECDC4';
+
+function generateRandomHex() {
+  const chars = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += chars[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
+function updateGradient() {
+  const direction = directionSelect.value;
+  let gradientCSS;
+  
+  if (direction === 'radial') {
+    gradientCSS = \`radial-gradient(circle, \${currentColor1}, \${currentColor2})\`;
+  } else {
+    gradientCSS = \`linear-gradient(\${direction}, \${currentColor1}, \${currentColor2})\`;
+  }
+  
+  colorPreview.style.background = gradientCSS;
+  cssCode.textContent = \`background: \${gradientCSS};\`;
+}
+
+function generateColors() {
+  currentColor1 = generateRandomHex();
+  currentColor2 = generateRandomHex();
+  
+  color1Hex.textContent = currentColor1;
+  color2Hex.textContent = currentColor2;
+  
+  updateGradient();
+  
+  // Animación de confirmación
+  generateBtn.textContent = '✨ Generado';
+  setTimeout(() => {
+    generateBtn.textContent = '🎨 Generar';
+  }, 1000);
+}
+
+async function copyGradient() {
+  try {
+    await navigator.clipboard.writeText(cssCode.textContent);
+    copyBtn.textContent = '✅ Copiado';
+    setTimeout(() => {
+      copyBtn.textContent = '📋 Copiar CSS';
+    }, 2000);
+  } catch (err) {
+    alert('No se pudo copiar al portapapeles');
+  }
+}
+
+// Event listeners
+generateBtn?.addEventListener('click', generateColors);
+copyBtn?.addEventListener('click', copyGradient);
+directionSelect?.addEventListener('change', updateGradient);
+
+// Generar colores iniciales
+generateColors();`,
+      },
+      "qr-generator": {
+        title: "📱 Generador de QR - Código Vanilla JS",
+        code: `// Generador de códigos QR con API externa
+const qrInput = document.getElementById('qr-input');
+const generateBtn = document.getElementById('generate-qr');
+const downloadBtn = document.getElementById('download-qr');
+const sizeSelect = document.getElementById('qr-size');
+const qrDisplay = document.getElementById('qr-display');
+
+let currentQRDataURL = '';
+
+function generateQR() {
+  const text = qrInput.value.trim();
+  const size = sizeSelect.value || '300';
+  
+  if (!text) {
+    alert('Por favor, introduce algún texto o URL');
+    return;
+  }
+
+  // Usar API pública de QR Server
+  const qrURL = \`https://api.qrserver.com/v1/create-qr-code/?size=\${size}x\${size}&data=\${encodeURIComponent(text)}\`;
+  
+  // Mostrar loading
+  qrDisplay.innerHTML = \`
+    <div class="qr-placeholder">
+      <div class="qr-icon">⏳</div>
+      <p>Generando código QR...</p>
+    </div>
+  \`;
+
+  // Crear imagen
+  const img = new Image();
+  img.onload = function() {
+    qrDisplay.innerHTML = '';
+    img.className = 'qr-code-img';
+    qrDisplay.appendChild(img);
+    
+    currentQRDataURL = qrURL;
+    downloadBtn.style.display = 'block';
+    
+    // Confirmación visual
+    generateBtn.textContent = '✅ Generado';
+    setTimeout(() => {
+      generateBtn.textContent = '📱 Generar QR';
+    }, 2000);
+  };
+  
+  img.onerror = function() {
+    qrDisplay.innerHTML = \`
+      <div class="qr-placeholder">
+        <div class="qr-icon">❌</div>
+        <p>Error al generar el código QR</p>
+      </div>
+    \`;
+  };
+  
+  img.src = qrURL;
+}
+
+async function downloadQR() {
+  if (!currentQRDataURL) return;
+  
+  try {
+    const response = await fetch(currentQRDataURL);
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'codigo-qr.png';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    
+    // Confirmación
+    downloadBtn.textContent = '✅ Descargado';
+    setTimeout(() => {
+      downloadBtn.textContent = '💾 Descargar PNG';
+    }, 2000);
+  } catch (error) {
+    alert('Error al descargar la imagen');
+  }
+}
+
+// Event listeners
+generateBtn?.addEventListener('click', generateQR);
+downloadBtn?.addEventListener('click', downloadQR);
+
+// Generar al presionar Enter
+qrInput?.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    generateQR();
+  }
+});
+
+// Generar QR inicial
+generateQR();`,
+      },
+    }; // Funcionalidad del modal
+    const modal = document.getElementById("codeModal");
+    const modalTitle = document.getElementById("modalTitle");
+    const codeContent = document.getElementById("codeContent");
+    const closeModal = document.getElementById("closeModal");
+
+    // Abrir modal
+    document.querySelectorAll(".view-code-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const projectId = (btn as HTMLElement).dataset.project;
+        const project = projectCodes[projectId as keyof typeof projectCodes];
+
+        if (project && modal && modalTitle && codeContent) {
+          modalTitle.textContent = project.title;
+          codeContent.textContent = project.code;
+          modal.classList.add("active");
+          document.body.style.overflow = "hidden";
+        }
+      });
+    });
+
+    // Cerrar modal
+    function closeModalHandler() {
+      if (modal) {
+        modal.classList.remove("active");
+        document.body.style.overflow = "auto";
+      }
     }
-  });
-</script>
+
+    closeModal?.addEventListener("click", closeModalHandler);
+
+    modal?.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        closeModalHandler();
+      }
+    });
+
+    // Cerrar con ESC
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal?.classList.contains("active")) {
+        closeModalHandler();
+      }
+    });
+  </script>
+</MicroProjectsLayout>
